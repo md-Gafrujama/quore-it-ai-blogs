@@ -136,7 +136,7 @@ const Page = () => {
     formData.append('authorImg', data.authorImg);
     formData.append('image', image);
     formData.append('isPublished', isPublished);
-    formData.append('company', 'personifiedb2b');
+    formData.append('company', 'quoreit'); // Use the fixed company name
 
     try {
       setLoading(true)
