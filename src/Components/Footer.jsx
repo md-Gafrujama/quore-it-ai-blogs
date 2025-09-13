@@ -1,165 +1,150 @@
 'use client';
 
-import React, { useState } from "react";
+import { Facebook, Linkedin, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import Logo1 from '../Assets/Logo1.png';
-import Logo2 from '../Assets/Logo2.png';
-import {
-  FaInstagram,
-  FaEnvelope,
-  FaPhone,
-  FaCalendarAlt,
-  FaMapMarkerAlt,
-  FaLinkedin,
-} from "react-icons/fa";
 
-const Footer = () => {
-  const [subscribed, setSubscribed] = useState(false);
-
+export default function Footer() {
   return (
-    <footer className="bg-[#192825] text-white py-10 px-6 lg:px-20">
-      {/* Toast Message */}
-
-      {/* Top Logo and Centered Socials */}
-      <div className="max-w-7xl mx-auto border-b border-gray-600 pb-6">
-        <div className="flex items-center justify-center space-x-6">
-          {/* Left: Logo with Text */}
-          <div className="flex items-center ">
-            <Image src={Logo1} alt="Kulan Logo 1" width={80} height={50} />
-            <Image src={Logo2} alt="Kulan Logo 2"  width={140} height={50} />
-          </div>
-
-          {/* Divider */}
-          <div className="h-6 w-px bg-gray-500" />
-
-          {/* Right: Social Icons */}
-          <div className="flex space-x-3">
-            <a href="#" className="w-10 h-10 flex items-center justify-center border border-gray-600 rounded-full hover:bg-gray-700 transition">
-              <FaInstagram />
-            </a>
-            <a href="#" className="w-10 h-10 flex items-center justify-center border border-gray-600 rounded-full hover:bg-gray-700 transition">
-              <FaLinkedin />
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* Grid Content */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 py-10">
-        {/* Newsletter */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Newsletter</h3>
-          <p className="text-sm text-gray-300 mb-4">
-            If your business hosts events or exhibitions, creative services can assist
-            with event planning, booth design.
-          </p>
-
-          <form
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const formData = new FormData(e.target);
-
-              formData.append("access_key", "c9f66eb3-7bae-487c-bd58-ab7a0f817bff");
-              formData.append("subject", "New Newsletter Subscription");
-              formData.append("from_name", "Kulan Newsletter");
-
-              try {
-                await fetch("https://api.web3forms.com/submit", {
-                  method: "POST",
-                  body: formData,
-                });
-
-                setSubscribed(true);
-                e.target.reset();
-                setTimeout(() => setSubscribed(false), 5000);
-              } catch (error) {
-                console.error("Submission error", error);
-              }
-            }}
-            className="space-y-4"
-          >
-            {/* Email Input */}
-            <input
-              type="email"
-              name="email"
-              required
-              placeholder="Enter your email"
-              className="w-full px-4 py-2 bg-[#132623] text-white border border-gray-700 rounded-md focus:outline-none"
-            />
-
-            {/* Subscribe Button and Message */}
-            <div className="relative w-full">
-              <button
-                type="submit"
-                className="relative w-full overflow-hidden bg-[#ffd800] text-black font-semibold py-2 px-4 rounded-md flex items-center justify-center group shadow-md"
-              >
-                <span className="relative z-10">Subscribe ↗</span>
-                <span className="absolute inset-0 bg-[#326964] z-0 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out rounded-md" />
-              </button>
-
-              {subscribed && (
-                <p className="text-emerald-300 font-medium text-sm mt-2">
-                  Thank you for subscribing!
-                </p>
-              )}
+    <footer className="bg-[#001f26] text-white dark:bg-gray-900 dark:text-gray-100 relative overflow-hidden">
+      {/* Decorative gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#001f26] via-[#002a33] to-[#001f26] opacity-50"></div>
+      
+      <div className="relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+            {/* Logo Section */}
+            <div className="space-y-4 text-center sm:text-left">
+              <div className="group">
+                <h1 className="text-3xl sm:text-4xl font-bold text-white group-hover:text-[#00d9a6] transition-all duration-300 ease-in-out transform group-hover:scale-105">
+                  QuoreIT
+                </h1>
+                <div className="w-12 h-1 bg-[#00d9a6] rounded-full mt-2 mx-auto sm:mx-0 transform group-hover:w-20 transition-all duration-300"></div>
+              </div>
+              <p className="text-gray-300 text-sm leading-relaxed max-w-xs mx-auto sm:mx-0">
+                Connecting talent with opportunities in the tech industry. Your trusted partner for career growth.
+              </p>
             </div>
-          </form>
+
+            {/* Quick Links */}
+            <div className="space-y-4 text-center sm:text-left">
+              <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6 text-white relative">
+                Quick Links
+                <div className="absolute -bottom-2 left-1/2 sm:left-0 transform -translate-x-1/2 sm:translate-x-0 w-8 h-0.5 bg-[#00d9a6] rounded-full"></div>
+              </h3>
+              <ul className="space-y-2 sm:space-y-3">
+                {[
+                  { label: "Find a job", path: "/Find-tech-jobs" },
+                  { label: "Submit a vacancy", path: "/Find-tech-talent" },
+                  { label: "What we do", path: "/What-we-do" },
+                  { label: "News & Events", path: "/News-and-events" },
+                  { label: "Contact us", path: "/Contact-us" },
+                ].map(({ label, path }, idx) => (
+                  <li key={idx} className="transform hover:translate-x-2 transition-all duration-200">
+                    <Link
+                      href={path}
+                      className="text-gray-300 hover:text-[#00d9a6] transition-all duration-200 flex items-center justify-center sm:justify-start group text-sm font-medium"
+                    >
+                      <span className="w-0 h-0.5 bg-[#00d9a6] mr-0 group-hover:w-4 group-hover:mr-2 transition-all duration-200 rounded-full"></span>
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Policies */}
+            <div className="space-y-4 text-center sm:text-left">
+              <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6 text-white relative">
+                Policies
+                <div className="absolute -bottom-2 left-1/2 sm:left-0 transform -translate-x-1/2 sm:translate-x-0 w-8 h-0.5 bg-[#00d9a6] rounded-full"></div>
+              </h3>
+              <ul className="space-y-2 sm:space-y-3">
+                {[
+                  { label: "Privacy Policy", path: "/Policies/Privacy-Policy" },
+                  { label: "Cookies & Legal", path: "/Policies/Cookies-Legal" },
+                  { label: "Modern Slavery Statement", path: "/Policies/Modern-Slavery-Statement" },
+                ].map(({ label, path }, idx) => (
+                  <li key={idx} className="transform hover:translate-x-2 transition-all duration-200">
+                    <Link
+                      href={path}
+                      className="text-gray-300 hover:text-[#00d9a6] transition-all duration-200 flex items-center justify-center sm:justify-start group text-sm font-medium"
+                    >
+                      <span className="w-0 h-0.5 bg-[#00d9a6] mr-0 group-hover:w-4 group-hover:mr-2 transition-all duration-200 rounded-full"></span>
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Social Media */}
+            <div className="space-y-4 text-center sm:text-left">
+              <h3 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6 text-white relative">
+                Follow Us
+                <div className="absolute -bottom-2 left-1/2 sm:left-0 transform -translate-x-1/2 sm:translate-x-0 w-8 h-0.5 bg-[#00d9a6] rounded-full"></div>
+              </h3>
+              <div className="flex gap-3 sm:gap-4 justify-center sm:justify-start">
+                {[
+                  { Icon: Facebook, label: "Facebook", href: "#" },
+                  { Icon: Linkedin, label: "LinkedIn", href: "#" },
+                  { Icon: Twitter, label: "Twitter", href: "#" },
+                ].map(({ Icon, label, href }, idx) => (
+                  <Link
+                    key={idx}
+                    href={href}
+                    aria-label={label}
+                    className="group relative p-2 sm:p-3 bg-[#213c42] rounded-full hover:bg-[#00d9a6] transition-all duration-300 transform hover:scale-110 hover:rotate-3"
+                  >
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-300 group-hover:text-white transition-colors duration-300" />
+                    <div className="absolute inset-0 rounded-full bg-[#00d9a6] opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                  </Link>
+                ))}
+              </div>
+              <p className="text-gray-400 text-xs mt-4">
+                Stay connected for the latest updates and opportunities
+              </p>
+            </div>
+          </div>
         </div>
 
-
-
-<div>
-  <h3 className="text-lg font-semibold mb-4">About Us</h3>
-  <ul className="space-y-2 text-sm text-gray-300">
-    <li>
-      <Link href="https://personifiedb2bmarketing.com/Contact" className="hover:text-[#ffd800]">Contact Us</Link>
-    </li>
-    <li>
-      <Link href="https://personifiedb2bmarketing.com/About" className="hover:text-[#ffd800]">About Us</Link>
-    </li>
-    
-  </ul>
-</div>
-
-<div>
-  <h3 className="text-lg font-semibold mb-4">Solutions</h3>
-  <ul className="space-y-2 text-sm text-gray-300">
-    <li>
-      <Link href="https://personifiedb2bmarketing.com/ContentSyndication" className="hover:text-[#ffd800]">B2B Content Sydication</Link>
-    </li>
-    <li>
-      <Link href="https://personifiedb2bmarketing.com/B2BDataIntent" className="hover:text-[#ffd800]">B2B Data & Intent
-</Link>
-    </li>
-    <li>
-      <Link href="https://personifiedb2bmarketing.com/SalesDevelopment" className="hover:text-[#ffd800]">Sales Devlopment</Link>
-    </li>
-    
-    
-  </ul>
-</div>
-
-
-        {/* Our Contact */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Our Contact</h3>
-          <ul className="space-y-3 text-sm text-gray-300">
-            <li className="flex items-center gap-2">
-              <FaEnvelope className="text-[#ffd800]" /> personifiedb2bmarketing@gmail.com
-            </li>
-           
-          </ul>
+        {/* Divider */}
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#00d9a6] to-transparent h-px"></div>
+          <div className="bg-[#213c42] h-px"></div>
         </div>
-      </div>
 
-      {/* Bottom Copyright */}
-      <div className="border-t border-gray-600 pt-6 text-center text-sm text-gray-400">
-     © 2025 Personifind.com | 
-        <span className="text-[#ffd800]">All Rights Reserved.</span>
+        {/* Bottom Section */}
+        <div className="bg-[#213c42] py-6 sm:py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              {/* Copyright */}
+              <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-left">
+                <div className="group cursor-pointer">
+                  <h1 className="text-xl sm:text-2xl font-bold text-white group-hover:text-[#00d9a6] transition-colors duration-300">
+                    QuoreIT
+                  </h1>
+                </div>
+                <div className="hidden sm:block h-6 w-px bg-gray-500"></div>
+                <p className="text-gray-400 text-sm">
+                  © 2025 All Rights Reserved
+                </p>
+              </div>
+
+              {/* Additional Info */}
+              <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-sm text-gray-400 text-center">
+                <span className="hover:text-[#00d9a6] transition-colors duration-200 cursor-pointer">
+                  Made with ❤️ for Tech Professionals
+                </span>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-[#00d9a6] rounded-full animate-pulse"></div>
+                  <span className="text-xs">Online</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

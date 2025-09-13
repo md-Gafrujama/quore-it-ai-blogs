@@ -381,77 +381,74 @@ const BlogList = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-[#F7D270]/5 to-[#386861]/10">
       {/* Enhanced Hero Section */}
-      <section className="relative bg-gradient-to-r from-[#294944] via-[#386861] to-[#294944] text-white py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0">
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-[#F7D270]/30 rounded-full"
-              initial={{ 
-                x: Math.random() * window.innerWidth, 
-                y: Math.random() * 600,
-                scale: 0 
-              }}
-              animate={{ 
-                y: [null, -100],
-                scale: [0, 1, 0],
-                opacity: [0, 1, 0]
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-                ease: "easeOut"
-              }}
-            />
-          ))}
-        </div>
+      <section className="relative bg-gradient-to-r from-[#e8f3f2] via-[#d9e8e6] to-[#e8f3f2] text-gray-800 py-15 overflow-hidden">
+  {/* Animated elements */}
+  <div className="absolute inset-0">
+    {[...Array(20)].map((_, i) => (
+      <motion.div
+        key={i}
+        className="absolute w-2 h-2 bg-[#386861]/20 rounded-full"
+        initial={{ 
+          x: Math.random() * window.innerWidth, 
+          y: Math.random() * 600,
+          scale: 0 
+        }}
+        animate={{ 
+          y: [null, -100],
+          scale: [0, 1, 0],
+          opacity: [0, 0.5, 0]
+        }}
+        transition={{
+          duration: 3 + Math.random() * 2,
+          repeat: Infinity,
+          delay: Math.random() * 2,
+          ease: "easeOut"
+        }}
+      />
+    ))}
+  </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <motion.h1 
-              className="text-5xl md:text-7xl font-bold mb-6"
-              animate={{ 
-                backgroundImage: ['linear-gradient(45deg, #F7D270, #ffffff)', 'linear-gradient(45deg, #ffffff, #F7D270)'],
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                color: 'transparent'
-              }}
-              transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
-            >
-              <span className="text-[#F7D270]">Explore</span> Our <br />
-              <span className="text-white">Knowledge Hub</span>
-            </motion.h1>
-            <motion.p 
-              className="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto leading-relaxed mb-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-            >
-              Dive into a curated collection of insights, trends, and expert
-              knowledge designed to elevate your understanding and inspire
-              action.
-            </motion.p>
+  <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
+      <motion.h1 
+        className="text-3xl md:text-6xl font-bold mb-6"
+        animate={{ 
+          backgroundImage: 'linear-gradient(45deg, #1a3d3a, #2a5a54)',
+          backgroundClip: 'text',
+          WebkitBackgroundClip: 'text',
+          color: 'transparent'
+        }}
+      >
+        <span className="text-[#32800F]">Explore Our</span>  <br />
+        <span className="text-[#32800F]">Knowledge Hub</span>
+      </motion.h1>
+      <motion.p 
+        className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.8 }}
+      >
+        Dive into a curated collection of insights, trends, and expert
+        knowledge designed to elevate your understanding and inspire
+        action.
+      </motion.p>
 
-            {/* Enhanced Search Bar */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-              className="mt-8"
-            >
-              <SearchBar value={input} onChange={setInput} />
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+      {/* Smaller Search Bar */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.8 }}
+        className="mt-4 max-w-md mx-auto"
+      >
+        <SearchBar value={input} onChange={setInput} />
+      </motion.div>
+    </motion.div>
+  </div>
+</section>
 
       {/* Enhanced Filter Section */}
       <section className="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-gray-200">

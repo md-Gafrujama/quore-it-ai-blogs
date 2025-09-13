@@ -17,14 +17,16 @@
     "axios": "^1.11.0",
     "heroicons": "^2.2.0",
     "html-react-parser": "^5.2.6",
+    "lucide-react": "^0.544.0",
     "motion": "^12.23.12",
     "next": "15.4.5",
     "quill": "^2.0.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-hot-toast": "^2.5.2",
+    "react-hot-toast": "^2.6.0",
     "react-icons": "^5.5.0",
-    "react-toastify": "^11.0.5"
+    "react-toastify": "^11.0.5",
+    "sonner": "^2.0.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
