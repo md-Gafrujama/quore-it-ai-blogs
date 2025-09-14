@@ -54,7 +54,7 @@ const BlogItem = ({ title, description, category, image, slug }) => {
         <p className='mb-3 text-sm tracking-tight text-gray-700'>{snippet}</p>
 
         <Link href={`/blogs/${slug}`} className='inline-flex items-center py-2 font-semibold text-center text-blue-600 hover:underline' aria-label={`Read more about ${title}`}>
-          Read more
+          Read morvvvvve
           <Image src={assets.arrow} alt="" width={12} className="ml-2" />
         </Link>
       </div>

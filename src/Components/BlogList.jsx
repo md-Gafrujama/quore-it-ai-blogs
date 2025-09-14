@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { baseURL, company } from "@/config/api";
 
@@ -26,163 +26,94 @@ const BlogCard = ({ blog, index }) => {
     window.location.href = `/blogs/${slug || _id}`;
   };
 
-  const calculateReadingTime = (text) => {
-    if (!text) return 1;
-    const wordsPerMinute = 200;
-    const words = text.replace(/<[^>]+>/g, "").split(" ").length;
-    return Math.ceil(words / wordsPerMinute);
+  // Simple date formatter
+  const formatDate = (dateString) => {
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+    } catch {
+      return "Unknown Date";
+    }
   };
-
-  const readingTime = calculateReadingTime(description);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50, scale: 0.9 }}
+      initial={{ opacity: 0, y: 40, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ 
-        duration: 0.6, 
-        delay: index * 0.1, 
-        ease: [0.25, 0.46, 0.45, 0.94] 
+      transition={{
+        duration: 0.5,
+        delay: index * 0.1,
+        ease: [0.25, 0.46, 0.45, 0.94],
       }}
-      whileHover={{ 
-        y: -8, 
+      whileHover={{
+        y: -5,
         scale: 1.02,
-        transition: { duration: 0.3, ease: "easeOut" }
+        transition: { duration: 0.3, ease: "easeOut" },
       }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      className="group relative cursor-pointer h-[420px]"
+      className="cursor-pointer"
       onClick={handleClick}
     >
-      {/* Main Card Container with fixed height */}
-      <div className="relative bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-100 hover:border-[#F7D270]/50 h-full flex flex-col">
-        
-        {/* Animated Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#F7D270]/0 via-[#F7D270]/0 to-[#386861]/0 group-hover:from-[#F7D270]/5 group-hover:via-[#F7D270]/3 group-hover:to-[#386861]/5 transition-all duration-700"></div>
-        
-        {/* Image Section - Fixed Height */}
-        <div className="relative h-48 overflow-hidden">
+      <div className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 flex flex-col h-full">
+        {/* Image */}
+        <div className="relative h-61 overflow-hidden">
           <motion.img
             src={image || "/default-blog.jpg"}
             alt={title || "Blog"}
-            className={`w-full h-full object-cover transition-all duration-700 ${
-              imageLoaded ? 'scale-100' : 'scale-110'
+            className={`w-full h-full object-cover transition-transform duration-700 ${
+              imageLoaded ? "scale-100" : "scale-110"
             }`}
-            style={{
-              filter: isHovered ? 'brightness(1.1) contrast(1.1)' : 'brightness(1) contrast(1)',
-            }}
+            // style={{
+            //   filter: isHovered
+            //     ? "brightness(1.1) contrast(1.1)"
+            //     : "brightness(1) contrast(1)",
+            // }}
             onLoad={() => setImageLoaded(true)}
           />
-          
-          {/* Overlay with animated opacity */}
-          <motion.div 
-            className="absolute inset-0 bg-gradient-to-t from-[#294944]/90 via-[#294944]/30 to-transparent"
-            animate={{
-              opacity: isHovered ? 0.8 : 0.6
-            }}
-            transition={{ duration: 0.3 }}
-          />
 
-          {/* Animated Category Badge */}
+          {/* Category Badge */}
           {category && (
-            <motion.div 
-              className="absolute top-4 right-4"
-              initial={{ scale: 0, rotate: -45 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: index * 0.1 + 0.3, type: "spring", stiffness: 200 }}
-            >
-              <motion.span 
-                className="inline-flex items-center px-4 py-2 bg-[#F7D270] text-[#294944] text-xs font-bold rounded-full shadow-lg"
-                whileHover={{ scale: 1.05, rotate: 2 }}
-                whileTap={{ scale: 0.95 }}
-              >
+            <div className="absolute top-3 left-3">
+              <span className="bg-white/90 text-gray-800 text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
                 {category}
-              </motion.span>
-            </motion.div>
+              </span>
+            </div>
           )}
 
-          {/* Interactive Reading Time with Icon Animation */}
-          <motion.div 
-            className="absolute bottom-4 left-4 flex items-center space-x-2 text-white bg-black/30 backdrop-blur-sm rounded-full px-3 py-1"
-            whileHover={{ scale: 1.05 }}
-          >
-            <motion.svg 
-              className="w-4 h-4" 
-              fill="currentColor" 
-              viewBox="0 0 20 20"
-              animate={{ rotate: isHovered ? 360 : 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                clipRule="evenodd"
-              />
-            </motion.svg>
-            <span className="text-sm font-medium">{readingTime} min read</span>
-          </motion.div>
-
-          {/* Floating Action Buttons */}
-          <motion.div 
-            className="absolute top-4 left-4 flex space-x-2"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors"
-            >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
-              </svg>
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors"
-            >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
-              </svg>
-            </motion.button>
-          </motion.div>
+          {/* Date Badge */}
+          <div className="absolute bottom-3 right-3">
+            <span className="bg-black/60 text-white text-xs px-3 py-1 rounded-full">
+              {formatDate(blog.createdAt || new Date())}
+            </span>
+          </div>
         </div>
 
-        {/* Content Section - Flexible Height */}
+        {/* Content */}
         <div className="flex-1 p-6 flex flex-col">
-          {/* Title with Character Limit */}
-          <motion.h3 
-            className="text-xl font-bold text-[#294944] mb-3 leading-tight"
-            animate={{ color: isHovered ? "#386861" : "#294944" }}
-            transition={{ duration: 0.3 }}
+          {/* Title */}
+          <h3
+            className={`text-base font-semibold leading-snug mb-3 transition-colors duration-300 ${
+              isHovered ? "text-green-600" : "text-gray-900"
+            }`}
           >
-            {title?.length > 60 ? `${title.slice(0, 60)}...` : title}
-          </motion.h3>
+            {title?.length > 90 ? `${title.slice(0, 90)}...` : title}
+          </h3>
 
-          {/* Description with Fixed Height */}
-          <div className="flex-1 mb-4">
-            <div
-              className="text-gray-600 text-sm leading-relaxed h-16 overflow-hidden"
-              dangerouslySetInnerHTML={{
-                __html: description
-                  ? description.replace(/<[^>]+>/g, "").slice(0, 120) + "..."
-                  : "Discover insights and knowledge in this featured article...",
-              }}
-            />
-          </div>
-
-          {/* Interactive Footer */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-            <motion.button 
-              className="flex items-center space-x-2 text-[#386861] hover:text-[#294944] font-semibold group/btn"
-              whileHover={{ x: 5 }}
+          {/* Button */}
+          <div className="mt-auto">
+            <motion.button
+              className="flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition-all duration-300"
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <span>Read More</span>
+              READ MORE
               <motion.svg
-                className="w-4 h-4"
+                className="w-4 h-4 ml-2"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -197,29 +128,14 @@ const BlogCard = ({ blog, index }) => {
                 />
               </motion.svg>
             </motion.button>
-
-           
           </div>
         </div>
-
-        {/* Animated Border Effect */}
-        <motion.div
-          className="absolute inset-0 rounded-3xl pointer-events-none"
-          style={{
-            background: `linear-gradient(45deg, transparent, transparent, ${isHovered ? '#F7D270' : 'transparent'})`,
-            padding: '2px',
-          }}
-          animate={{
-            background: isHovered 
-              ? 'linear-gradient(45deg, #F7D270, transparent, transparent, #386861)' 
-              : 'linear-gradient(45deg, transparent, transparent, transparent, transparent)',
-          }}
-          transition={{ duration: 0.6 }}
-        />
       </div>
     </motion.div>
   );
 };
+
+
 
 const FilterButton = ({ category, isActive, onClick, index }) => (
   <motion.button
@@ -508,7 +424,7 @@ const BlogList = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
               {getFilteredBlogs().length > 0 ? (
                 getFilteredBlogs().map((item, index) => (
