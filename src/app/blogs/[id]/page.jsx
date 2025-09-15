@@ -2,7 +2,8 @@ import BlogClient from './BlogClient';
 
 // Generate metadata for each individual blog
 export async function generateMetadata({ params }) {
-  console.log('Generating metadata for slug:', params.id);
+  const resolvedParams = await params;
+  console.log('Generating metadata for slug:', resolvedParams.id);
   
   try {
     // Get base URL with fallback
@@ -10,7 +11,7 @@ export async function generateMetadata({ params }) {
     console.log('Using base URL:', baseUrl);
     
     // Fetch blog data by slug using native fetch (server-side)
-    const apiUrl = `${baseUrl}/api/blog/slug/${params.id}`;
+    const apiUrl = `${baseUrl}/api/blog/slug/${resolvedParams.id}`;
     console.log('Fetching from:', apiUrl);
     
     const res = await fetch(apiUrl, {
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }) {
     const blog = data.blog;
 
     if (!blog) {
-      console.log('No blog found for slug:', params.id);
+      console.log('No blog found for slug:', resolvedParams.id);
       return {
         title: 'Blog Not Found - AI Blog',
         description: 'This blog post does not exist or has been removed.',
@@ -148,9 +149,10 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default function Page({ params }) {
+export default async function Page({ params }) {
+  const resolvedParams = await params;
   // Pass slug to BlogClient for client-side logic
-  return <BlogClient slug={params.id} />;
+  return <BlogClient slug={resolvedParams.id} />;
 }
 
 
