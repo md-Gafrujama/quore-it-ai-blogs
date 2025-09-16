@@ -56,56 +56,77 @@ const BlogTableItem = ({ blog, fetchBlogs, index }) => {
       }
     };
     return (
-      <tr className='bg-white border-b'>
-        <th scope='row' className='items-center gap-3 hidden sm:flex px-6 py-4 font-medium text-gray-900 whitespace-nowrap'>
-          {/* <Image width={40} height={40} src={blog.authorImg ? blog.authorImg : assets.profile_icon} alt={blog.author || 'author'} /> */}
-          <p>{blog.author || 'No author'}</p>
-        </th>
+      <tr className='bg-white hover:bg-gray-50 transition-colors duration-200 border-b border-gray-100'>
         <td className='px-6 py-4'>
-          {blog.title || 'no title'}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-[#00D7A4] to-teal-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+              {(blog.author || 'A').charAt(0).toUpperCase()}
+            </div>
+            <div className="hidden sm:block">
+              <p className="font-medium text-gray-900">{blog.author || 'No author'}</p>
+              <p className="text-sm text-gray-500">Author</p>
+            </div>
+          </div>
         </td>
         <td className='px-6 py-4'>
-          {BlogDate && !isNaN(BlogDate) ? BlogDate.toLocaleDateString() : 'No date'}
+          <div className="max-w-xs">
+            <p className="font-medium text-gray-900 truncate" title={blog.title}>
+              {blog.title || 'No title'}
+            </p>
+            <p className="text-sm text-gray-500 mt-1">Blog post</p>
+          </div>
         </td>
-        <td className='px-6 py-4'>
+        <td className='px-6 py-4 hidden md:table-cell'>
+          <div className="text-sm">
+            <p className="text-gray-900 font-medium">
+              {BlogDate && !isNaN(BlogDate) ? BlogDate.toLocaleDateString() : 'No date'}
+            </p>
+            <p className="text-gray-500">
+              {BlogDate && !isNaN(BlogDate) ? BlogDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : ''}
+            </p>
+          </div>
+        </td>
+        <td className='px-6 py-4 hidden sm:table-cell'>
           {isPublished ? (
-            <span className="inline-block px-3 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+              <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
               Published
             </span>
           ) : (
-            <span className="inline-block px-3 py-1 text-xs font-semibold bg-yellow-100 text-yellow-700 rounded-full">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 border border-yellow-200">
+              <div className="w-2 h-2 bg-yellow-400 rounded-full mr-2"></div>
               Draft
             </span>
           )}
         </td>
         <td className='px-6 py-4'>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
             {isPublished ? (
               <button
-                className="flex items-center gap-1 px-3 py-1 bg-yellow-100 text-yellow-700 rounded hover:bg-yellow-200 text-xs border border-yellow-600 font-semibold"
+                className="inline-flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-lg hover:from-yellow-600 hover:to-yellow-700 text-xs font-medium transition-all duration-200 shadow-sm hover:shadow-md"
                 onClick={handleUnpublish}
                 title="Unpublish blog"
               >
                 <EyeSlashIcon className="w-4 h-4" />
-                Unpublish
+                <span className="hidden sm:inline">Unpublish</span>
               </button>
             ) : (
               <button
-                className="flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-xs border border-blue-600 font-semibold"
+                className="inline-flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-[#00D7A4] to-teal-600 text-white rounded-lg hover:from-teal-600 hover:to-teal-700 text-xs font-medium transition-all duration-200 shadow-sm hover:shadow-md"
                 onClick={handlePublish}
                 title="Publish blog"
               >
                 <EyeIcon className="w-4 h-4" />
-                Publish
+                <span className="hidden sm:inline">Publish</span>
               </button>
             )}
             <button
-              className="flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-xs border border-red-600 font-semibold"
+              className="inline-flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg hover:from-red-600 hover:to-red-700 text-xs font-medium transition-all duration-200 shadow-sm hover:shadow-md"
               onClick={handleDelete}
               title="Delete blog"
             >
               <TrashIcon className="w-4 h-4" />
-              Delete
+              <span className="hidden sm:inline">Delete</span>
             </button>
           </div>
         </td>

@@ -11,6 +11,7 @@ const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState({
     blogs: 0,
     comments: 0,
+    subscriptions: 0,
     recentBlogs: [],
   });
 
@@ -19,23 +20,41 @@ const Dashboard = () => {
 
   const fetchDashboard = async () => {
     try {
+      // Fetch dashboard data
       const { data } = await axios.get(
         `${baseURL}/api/admin/dashboard?company=${company}`
       );
 
-      console.log(data);
+      // Fetch subscriber count separately
+      const token = localStorage.getItem('token');
+      const emailsResponse = await axios.get(`${baseURL}/api/admin/emails`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          company: company,
+        },
+      });
+
+      console.log('Dashboard data:', data);
+      console.log('Emails data:', emailsResponse.data);
 
       if (data.success) {
+        const subscriberCount = emailsResponse.data.success 
+          ? emailsResponse.data.emails.filter(e => e.company === company).length 
+          : 0;
+
         setDashboardData({
-         
           blogs: data.dashboardData.companyBlogCounts[company] || 0,
           comments: data.dashboardData.comments || 0,
+          subscriptions: subscriberCount,
           recentBlogs: data.dashboardData.recentBlogs || [],
         });
       } else {
         toast.error(data.message);
       }
     } catch (error) {
+      console.error('Dashboard fetch error:', error);
       toast.error(error.message);
     }
   };
@@ -58,14 +77,14 @@ const Dashboard = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-12 max-w-3xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12 max-w-5xl">
           <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-3xl shadow-xl border border-gray-200 hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer group">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-5xl font-bold text-[#00D7A4] mb-2">
                   {dashboardData.blogs}
                 </p>
-                <p className="text-gray-600 font-semibold text-lg">{company} Blogs</p>
+                <p className="text-gray-600 font-semibold text-lg">Total Blogs</p>
               </div>
               <div className="p-4 bg-gradient-to-br from-[#00D7A4] to-teal-600 rounded-2xl group-hover:scale-110 transition-transform shadow-lg">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,6 +110,21 @@ const Dashboard = () => {
             </div>
           </div>
 
+          <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-3xl shadow-xl border border-gray-200 hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer group">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-5xl font-bold text-purple-600 mb-2">
+                  {dashboardData.subscriptions}
+                </p>
+                <p className="text-gray-600 font-semibold text-lg">Subscriptions</p>
+              </div>
+              <div className="p-4 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl group-hover:scale-110 transition-transform shadow-lg">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+            </div>
+          </div>
 
    
         </div>

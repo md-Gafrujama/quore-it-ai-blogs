@@ -190,7 +190,7 @@ const Page = () => {
               name="title"
               onChange={onChangeHandler}
               value={data.title}
-              className="w-full max-w-2xl px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#00D7A4] focus:ring-4 focus:ring-teal-100 transition-all duration-200"
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#00D7A4] focus:ring-4 focus:ring-teal-100 transition-all duration-200"
               type="text"
               placeholder="Enter an engaging title..."
               required
@@ -203,7 +203,7 @@ const Page = () => {
               name="author"
               onChange={onChangeHandler}
               value={data.author}
-              className="w-full max-w-lg px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#00D7A4] focus:ring-4 focus:ring-teal-100 transition-all duration-200"
+              className="w-full sm:max-w-lg px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-[#00D7A4] focus:ring-4 focus:ring-teal-100 transition-all duration-200"
               type="text"
               placeholder="Author name..."
               required
@@ -212,8 +212,10 @@ const Page = () => {
 
           <div className="mt-8">
             <p className="text-lg font-semibold text-gray-700 mb-3">Blog Description</p>
-            <div className="max-w-4xl min-h-[350px] relative rounded-xl border-2 border-gray-200 focus-within:border-[#00D7A4] transition-colors duration-200">
-              <div ref={editorRef} className="h-full"></div>
+            <div className="w-full min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] relative rounded-xl border-2 border-gray-200 focus-within:border-[#00D7A4] focus-within:ring-4 focus-within:ring-teal-100 transition-all duration-200 bg-white shadow-sm">
+              <div ref={editorRef}
+                       className="h-full min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] w-full px-3 sm:px-4 py-3 text-gray-900 placeholder-gray-400 leading-relaxed focus:outline-none rounded-xl overflow-y-auto resize-none"></div>
+
               {loading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white/80 rounded-xl backdrop-blur-sm">
                   <div className="flex items-center space-x-3">
@@ -226,9 +228,11 @@ const Page = () => {
                 disabled={loading}
                 type="button"
                 onClick={generateContent}
-                className="absolute bottom-3 right-3 px-4 py-2 bg-[#00D7A4] hover:bg-teal-600 text-white text-sm font-medium rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl disabled:opacity-50"
+                className="absolute bottom-3 right-3 px-3 sm:px-4 py-2 bg-gradient-to-r from-[#00D7A4] to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white text-xs sm:text-sm font-medium rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
-                ✨ Generate with AI
+                <span className="text-sm">✨</span>
+                <span className="hidden sm:inline">Generate with AI</span>
+                <span className="sm:hidden">AI</span>
               </button>
             </div>
           </div>
@@ -239,7 +243,7 @@ const Page = () => {
               name="category"
               onChange={onChangeHandler}
               value={data.category}
-              className="px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-700 bg-white focus:outline-none focus:border-[#00D7A4] focus:ring-4 focus:ring-teal-100 hover:border-teal-300 transition-all duration-200"
+              className="w-full sm:max-w-xs px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 bg-white focus:outline-none focus:border-[#00D7A4] focus:ring-4 focus:ring-teal-100 hover:border-teal-300 transition-all duration-200"
             >
               <option value="ABM">ABM</option>
               <option value="Advertising">Advertising</option>
@@ -250,17 +254,22 @@ const Page = () => {
             </select>
           </div>
 
-          <div className="flex items-center gap-3 mt-6">
+          <div className="flex items-start sm:items-center gap-3 mt-8 p-4 bg-gray-50 rounded-xl border border-gray-200">
             <input
               type="checkbox"
               id="publish"
               checked={isPublished}
               onChange={e => setIsPublished(e.target.checked)}
-              className="w-5 h-5 text-[#00D7A4] border-2 border-gray-300 rounded focus:ring-teal-400 focus:ring-2"
+              className="w-5 h-5 mt-0.5 sm:mt-0 border-2 border-gray-300 rounded focus:ring-2 focus:ring-[#00D7A4] checked:bg-[#00D7A4] checked:border-[#00D7A4] accent-[#00D7A4] transition-colors duration-200"
             />
-            <label htmlFor="publish" className="text-gray-700 font-medium cursor-pointer">
-              Publish immediately after creation
-            </label>
+            <div className="flex-1">
+              <label htmlFor="publish" className="text-gray-900 font-medium cursor-pointer block">
+                Publish immediately after creation
+              </label>
+              <p className="text-sm text-gray-600 mt-1">
+                Your blog will be visible to readers as soon as it's created
+              </p>
+            </div>
           </div>
 
           <button
