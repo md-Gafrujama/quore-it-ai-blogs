@@ -2,34 +2,32 @@ import BlogClient from './BlogClient';
 
 // Generate metadata for each individual blog
 export async function generateMetadata({ params }) {
-  const resolvedParams = await params;
-  console.log('Generating metadata for slug:', resolvedParams.id);
-  
+  const slug = params.id;
+  console.log('Generating metadata for slug:', slug);
+
   try {
-    // Get base URL with fallback
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000';
+    // Use API_BASE_URL for server (better than NEXT_PUBLIC_BASE_URL)
+    const baseUrl = process.env.API_BASE_URL || 'http://localhost:5000';
     console.log('Using base URL:', baseUrl);
-    
-    // Fetch blog data by slug using native fetch (server-side)
-    const apiUrl = `${baseUrl}/api/blog/slug/${resolvedParams.id}`;
+
+    const apiUrl = `${baseUrl}/api/blog/slug/${slug}`;
     console.log('Fetching from:', apiUrl);
-    
+
     const res = await fetch(apiUrl, {
-      next: { revalidate: 3600 } // Cache for 1 hour
+      cache: 'no-store', // or revalidate: 3600 if you want caching
     });
-    
+
     if (!res.ok) {
       console.error('API response not ok:', res.status, res.statusText);
       throw new Error(`Failed to fetch blog: ${res.status}`);
     }
-    
+
     const data = await res.json();
     console.log('API response data:', data);
-    
-    const blog = data.blog;
 
+    const blog = data.blog;
     if (!blog) {
-      console.log('No blog found for slug:', resolvedParams.id);
+      console.log('No blog found for slug:', slug);
       return {
         title: 'Blog Not Found - AI Blog',
         description: 'This blog post does not exist or has been removed.',
@@ -41,19 +39,19 @@ export async function generateMetadata({ params }) {
     }
 
     console.log('Generating metadata for blog:', blog.title);
-    
-    // Clean description for better SEO
-    const cleanDescription = blog.description
-      ?.replace(/<[^>]+>/g, '') // Remove HTML tags
-      ?.replace(/\s+/g, ' ') // Replace multiple spaces with single space
-      ?.trim()
-      ?.slice(0, 160) || 'Read this insightful article on AI Blog.';
-    
+
+    const cleanDescription =
+      blog.description
+        ?.replace(/<[^>]+>/g, '') // Remove HTML tags
+        ?.replace(/\s+/g, ' ')
+        ?.trim()
+        ?.slice(0, 160) || 'Read this insightful article on AI Blog.';
+
     const blogUrl = `${baseUrl}/blogs/${blog.slug}`;
     const publishDate = blog.date || blog.createdAt;
     const modifiedDate = blog.updatedAt || publishDate;
-    
-    const metadata = {
+
+    return {
       title: `${blog.title} - AI Blog`,
       description: cleanDescription,
       keywords: [
@@ -64,16 +62,11 @@ export async function generateMetadata({ params }) {
         'startup',
         'lifestyle',
         blog.author?.toLowerCase(),
-        ...(blog.title?.toLowerCase().split(' ').slice(0, 5) || [])
+        ...(blog.title?.toLowerCase().split(' ').slice(0, 5) || []),
       ].filter(Boolean),
       authors: [{ name: blog.author || 'Admin' }],
       creator: blog.author || 'Admin',
       publisher: 'AI Blog',
-      formatDetection: {
-        email: false,
-        address: false,
-        telephone: false,
-      },
       metadataBase: new URL(baseUrl),
       alternates: {
         canonical: blogUrl,
@@ -105,8 +98,8 @@ export async function generateMetadata({ params }) {
         title: blog.title,
         description: cleanDescription,
         images: [blog.image],
-        creator: '@yourhandle', // Replace with your Twitter handle
-        site: '@yourhandle', // Replace with your Twitter handle
+        creator: '@yourhandle',
+        site: '@yourhandle',
       },
       robots: {
         index: true,
@@ -119,11 +112,6 @@ export async function generateMetadata({ params }) {
           'max-snippet': -1,
         },
       },
-      verification: {
-        google: 'your-google-verification-code', // Add your Google verification code
-        yandex: 'your-yandex-verification-code', // Add if needed
-        yahoo: 'your-yahoo-verification-code', // Add if needed
-      },
       other: {
         'article:published_time': publishDate,
         'article:modified_time': modifiedDate,
@@ -132,15 +120,12 @@ export async function generateMetadata({ params }) {
         'article:tag': blog.category,
       },
     };
-    
-    console.log('Generated metadata:', metadata);
-    return metadata;
-    
   } catch (error) {
     console.error('Error generating metadata:', error);
     return {
       title: 'Blog - AI Blog',
-      description: 'Read insightful articles on technology, startups, and lifestyle.',
+      description:
+        'Read insightful articles on technology, startups, and lifestyle.',
       robots: {
         index: false,
         follow: true,
@@ -150,10 +135,5 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  const resolvedParams = await params;
-  // Pass slug to BlogClient for client-side logic
-  return <BlogClient slug={resolvedParams.id} />;
+  return <BlogClient slug={params.id} />;
 }
-
-
-

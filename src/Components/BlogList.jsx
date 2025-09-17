@@ -94,7 +94,7 @@ const BlogCard = ({ blog, index }) => {
         </div>
 
         {/* Content */}
-        <div className="flex-1 p-6 flex flex-col">
+        <div className="flex-1 p-6 flex flex-col">``
           {/* Title */}
           <h3
             className={`text-base font-semibold leading-snug mb-3 transition-colors duration-300 ${
@@ -245,7 +245,7 @@ const BlogList = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `${baseURL}/api/admin/blogs?company=${company}`
+        `${baseURL}/api/blog/all`
       );
       const filteredBlogs =
         response.data?.blogs?.filter((blog) => blog.company === company) || [];
