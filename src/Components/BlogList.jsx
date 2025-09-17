@@ -94,7 +94,7 @@ const BlogCard = ({ blog, index }) => {
         </div>
 
         {/* Content */}
-        <div className="flex-1 p-6 flex flex-col">``
+        <div className="flex-1 p-6 flex flex-col">
           {/* Title */}
           <h3
             className={`text-base font-semibold leading-snug mb-3 transition-colors duration-300 ${
