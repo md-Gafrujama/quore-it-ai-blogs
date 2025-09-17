@@ -23,7 +23,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'AI Blog - Latest Technology & Startup Insights',
     description: 'Discover the latest insights on technology, startups, and lifestyle.',
-    images: ['/logo.png'], // Add your logo path
+    images: ['/image.png'], // Add your logo path
   },
   robots: {
     index: true,
