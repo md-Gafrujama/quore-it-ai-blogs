@@ -12,7 +12,7 @@ export const metadata = {
     siteName: 'AI Blog',
     images: [
       {
-        url: '/logo.png', // Add your logo path
+        url: '/image.png', // Add your logo path
         width: 1200,
         height: 630,
         alt: 'AI Blog',
