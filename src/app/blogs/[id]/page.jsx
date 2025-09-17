@@ -64,7 +64,7 @@ export async function generateMetadata({ params }) {
         'startup',
         'lifestyle',
         blog.author?.toLowerCase(),
-        ...(blog.title?.toLowerCase().split(' ').slice(0, 5) || [])
+        ...(blog.title?.toLowerCase().split(' ') || [])
       ].filter(Boolean),
       authors: [{ name: blog.author || 'Admin' }],
       creator: blog.author || 'Admin',
