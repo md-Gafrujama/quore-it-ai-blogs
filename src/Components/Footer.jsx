@@ -509,20 +509,7 @@ export default function Footer() {
                 ))}
               </div>
               {/* Professional Stats Grid */}
-              <div className="grid grid-cols-2 gap-4 pt-6">
-                {[
-                  { icon: Users, value: "500+", label: "Companies" },
-                  { icon: Globe, value: "25+", label: "Countries" },
-                  { icon: Shield, value: "99.9%", label: "Uptime" },
-                  { icon: Clock, value: "24/7", label: "Support" },
-                ].map(({ icon: Icon, value, label }, idx) => (
-                  <div key={idx} className="group text-center p-4 bg-slate-800/30 backdrop-blur-sm rounded-2xl border border-slate-700/20 hover:border-green-500/40 transition-all duration-300">
-                    <Icon className="w-6 h-6 text-slate-400 group-hover:text-green-400 mx-auto mb-2 transition-colors duration-300" />
-                    <div className="text-xl font-bold text-white">{value}</div>
-                    <div className="text-xs text-slate-400">{label}</div>
-                  </div>
-                ))}
-              </div>
+             
             </div>
           </div>
         </div>
@@ -596,9 +583,7 @@ export default function Footer() {
                   
                 </div>
                 
-                <div className="text-center lg:text-right">
-                  <p className="text-slate-400">Pioneering Technology Recruitment Since 1999</p>
-                </div>
+               
               </div>
             </div>
           </div>
