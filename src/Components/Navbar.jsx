@@ -59,9 +59,8 @@ const Navbar = () => {
     { name: 'INFORMATION TECHNOLOGY', href: '/Find-tech-jobs/Information-technology' },
     { name: 'ENGINEERING', href: '/Find-tech-jobs/engineering' },
     { name: 'GOVERNMENT SERVICES', href: '/Find-tech-jobs/government-services' },
-    { name: 'CONSULTING SERVICES', href: '/Find-tech-jobs/consulting-services' },
-    { name: 'TECHNOLOGY SOLUTIONS', href: '/Find-tech-jobs/technology-solutions' },
-    { name: 'PAST PERFORMANCE', href: '/Find-tech-jobs/past-performance' },
+    { name: 'AEROSPACE STAFFING', href: '/Find-tech-jobs/consulting-services' },
+    
   ];
 
   const navItems = [
@@ -69,7 +68,7 @@ const Navbar = () => {
     { name: 'FIND TECH TALENT', href: '/Find-tech-talent' },
     { name: 'WHAT WE DO', href: '/What-we-do' },
     { name: 'NEWS & EVENTS', href: '/News-and-events' },
-    { name: 'OUR COMPANY', href: '/Our-company' },
+    { name: 'ABOUT US', href: '/about-us' },
     { name: 'CONTACT US', href: '/Contact-us' },
   ];
 
