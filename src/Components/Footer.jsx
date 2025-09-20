@@ -605,7 +605,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Professional Back to Top Button */}
+     
       
     </footer>
   );
