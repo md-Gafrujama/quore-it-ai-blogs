@@ -398,12 +398,12 @@ export default function Footer() {
               
               <ul className="space-y-2">
                 {[
-                  { label: "Find Tech Jobs", path: "/Find-tech-jobs", description: "Discover your next opportunity", Icon: Rocket },
-                  { label: "Submit Vacancy", path: "/Find-tech-talent", description: "Find exceptional talent", Icon: Users },
-                  { label: "What We Do", path: "/What-we-do", description: "Our comprehensive services", Icon: Zap },
+                  { label: "Find Tech Jobs", path: "https://www.quoreit.com/Find-tech-jobs", description: "Discover your next opportunity", Icon: Rocket },
+                  { label: "Submit Vacancy", path: "https://www.quoreit.com/Find-tech-talent", description: "Find exceptional talent", Icon: Users },
+                  { label: "What We Do", path: "https://www.quoreit.com/What-we-do", description: "Our comprehensive services", Icon: Zap },
                   { label: "News & Events", path: "https://quore-it-ai-blogs.vercel.app/", description: "Latest industry insights", Icon: Newspaper },
-                  { label: "About Us", path: "/About-Us", description: "Our story and mission", Icon: Target },
-                  { label: "Contact Us", path: "/Contact-us", description: "Get in touch today", Icon: MessageCircle },
+                  { label: "About Us", path: "https://www.quoreit.com/About-Us", description: "Our story and mission", Icon: Target },
+                  { label: "Contact Us", path: "https://www.quoreit.com/Contact-us", description: "Get in touch today", Icon: MessageCircle },
                 ].map(({ label, path, description, Icon }, idx) => (
                   <li key={idx} className="group">
                     <Link
@@ -444,11 +444,11 @@ export default function Footer() {
               
               <ul className="space-y-2">
                 {[
-                  { label: "News & Insights", path: "https://quore-it-ai-blogs.vercel.app/", description: "Latest industry trends", external: true, Icon: BarChart3 },
-                  { label: "Privacy Policy", path: "/Policies/Privacy-Policy", description: "Data protection standards", Icon: Lock },
+                  
+                  { label: "Privacy Policy", path: "https://www.quoreit.com/Policies/Privacy-Policy", description: "Data protection standards", Icon: Lock },
                   { label: "Terms of Service", path: "/Policies/Terms-of-Service", description: "Usage guidelines", Icon: FileText },
-                  { label: "Cookies & Legal", path: "/Policies/Cookies-Legal", description: "Legal compliance", Icon: Scale },
-                  { label: "Modern Slavery", path: "/Policies/Modern-Slavery-Statement", description: "Our ethical commitment", Icon: Handshake },
+                  { label: "Cookies & Legal", path: "https://www.quoreit.com/Policies/Cookies-Legal", description: "Legal compliance", Icon: Scale },
+                  { label: "Modern Slavery", path: "https://www.quoreit.com/Policies/Modern-Slavery-Statement", description: "Our ethical commitment", Icon: Handshake },
                 ].map(({ label, path, description, external, Icon }, idx) => (
                   <li key={idx} className="group">
                     <Link
