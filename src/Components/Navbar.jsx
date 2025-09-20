@@ -57,7 +57,7 @@ const Navbar = () => {
 
   const techJobCategories = [
     { name: 'INFORMATION TECHNOLOGY', href: 'https://www.quoreit.com/Find-tech-jobs/Information-technology' },
-    { name: 'ENGINEERING', href: '/https://www.quoreit.com/Find-tech-jobs/engineering' },
+    { name: 'ENGINEERING', href: 'https://www.quoreit.com/Find-tech-jobs/engineering' },
     { name: 'GOVERNMENT SERVICES', href: 'https://www.quoreit.com/Find-tech-jobs/government-services' },
     { name: 'AEROSPACE STAFFING', href: 'https://www.quoreit.com/Find-tech-jobs/aerospace-staffing' },
     
