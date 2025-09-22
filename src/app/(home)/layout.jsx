@@ -1,15 +1,15 @@
 import { baseURL } from '@/config/api';
 
 export const metadata = {
-  title: 'AI Blog - Latest Technology & Startup Insights',
+  title: ' Latest Technology & Startup Insights',
   description: 'Discover the latest insights on technology, startups, and lifestyle. Read expert articles and stay updated with trending topics.',
   keywords: ['technology', 'startup', 'lifestyle', 'blog', 'articles', 'insights'],
   openGraph: {
-    title: 'AI Blog - Latest Technology & Startup Insights',
+    title: ' Latest Technology & Startup Insights',
     description: 'Discover the latest insights on technology, startups, and lifestyle. Read expert articles and stay updated with trending topics.',
     type: 'website',
     url: baseURL,
-    siteName: 'AI Blog',
+    siteName: 'Latest Technology & Startup Insights',
     images: [
       {
         url: '/image.png', // Add your logo path
@@ -21,7 +21,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Blog - Latest Technology & Startup Insights',
+    title: ' Latest Technology & Startup Insights',
     description: 'Discover the latest insights on technology, startups, and lifestyle.',
     images: ['/image.png'], // Add your logo path
   },
