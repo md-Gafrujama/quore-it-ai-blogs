@@ -4,6 +4,10 @@ export const metadata = {
   title: ' Latest Technology & Startup Insights',
   description: 'Discover the latest insights on technology, startups, and lifestyle. Read expert articles and stay updated with trending topics.',
   keywords: ['technology', 'startup', 'lifestyle', 'blog', 'articles', 'insights'],
+  
+  // Add metadataBase for Next.js to resolve relative URLs
+  metadataBase: new URL(baseURL),
+  
   openGraph: {
     title: ' Latest Technology & Startup Insights',
     description: 'Discover the latest insights on technology, startups, and lifestyle. Read expert articles and stay updated with trending topics.',
@@ -12,7 +16,7 @@ export const metadata = {
     siteName: 'Latest Technology & Startup Insights',
     images: [
       {
-        url: 'https://quore-it-ai-blogs.vercel.app/image.png', // Add your logo path
+        url: `${baseURL}/image.png`, // Use absolute URL
         width: 1200,
         height: 630,
         alt: 'AI Blog',
@@ -23,7 +27,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: ' Latest Technology & Startup Insights',
     description: 'Discover the latest insights on technology, startups, and lifestyle.',
-    images: ['https://quore-it-ai-blogs.vercel.app/image.png'], // Add your logo path
+    images: [`${baseURL}/image.png`], // Use absolute URL
   },
   robots: {
     index: true,
@@ -40,4 +44,4 @@ export const metadata = {
 
 export default function HomeLayout({ children }) {
   return children;
-} 
+}
