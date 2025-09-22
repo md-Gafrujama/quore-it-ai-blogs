@@ -12,7 +12,7 @@ export const metadata = {
     siteName: 'Latest Technology & Startup Insights',
     images: [
       {
-        url: '/image.png', // Add your logo path
+        url: 'https://quore-it-ai-blogs.vercel.app/image.png', // Add your logo path
         width: 1200,
         height: 630,
         alt: 'AI Blog',
@@ -23,7 +23,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: ' Latest Technology & Startup Insights',
     description: 'Discover the latest insights on technology, startups, and lifestyle.',
-    images: ['/image.png'], // Add your logo path
+    images: ['https://quore-it-ai-blogs.vercel.app/image.png'], // Add your logo path
   },
   robots: {
     index: true,
