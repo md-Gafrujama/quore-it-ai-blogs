@@ -56,21 +56,20 @@ const Navbar = () => {
   }, []);
 
   const techJobCategories = [
-    { name: 'INFORMATION TECHNOLOGY', href: '/Find-tech-jobs/Information-technology' },
-    { name: 'ENGINEERING', href: '/Find-tech-jobs/engineering' },
-    { name: 'GOVERNMENT SERVICES', href: '/Find-tech-jobs/government-services' },
-    { name: 'CONSULTING SERVICES', href: '/Find-tech-jobs/consulting-services' },
-    { name: 'TECHNOLOGY SOLUTIONS', href: '/Find-tech-jobs/technology-solutions' },
-    { name: 'PAST PERFORMANCE', href: '/Find-tech-jobs/past-performance' },
+    { name: 'INFORMATION TECHNOLOGY', href: 'https://www.quoreit.com/Find-tech-jobs/Information-technology' },
+    { name: 'ENGINEERING', href: 'https://www.quoreit.com/Find-tech-jobs/engineering' },
+    { name: 'GOVERNMENT SERVICES', href: 'https://www.quoreit.com/Find-tech-jobs/government-services' },
+    { name: 'AEROSPACE STAFFING', href: 'https://www.quoreit.com/Find-tech-jobs/aerospace-staffing' },
+    
   ];
 
   const navItems = [
-    { name: 'FIND TECH JOBS', href: '/Find-tech-jobs', hasDropdown: true },
-    { name: 'FIND TECH TALENT', href: '/Find-tech-talent' },
-    { name: 'WHAT WE DO', href: '/What-we-do' },
-    { name: 'NEWS & EVENTS', href: '/News-and-events' },
-    { name: 'OUR COMPANY', href: '/Our-company' },
-    { name: 'CONTACT US', href: '/Contact-us' },
+    { name: 'FIND TECH JOBS', href: 'https://www.quoreit.com/Find-tech-jobs', hasDropdown: true },
+    { name: 'FIND TECH TALENT', href: 'https://www.quoreit.com/Find-tech-talent' },
+    { name: 'WHAT WE DO', href: 'https://www.quoreit.com/What-we-do' },
+    { name: 'NEWS & EVENTS', href: 'https://quore-it-ai-blogs.vercel.app/' },
+    { name: 'ABOUT US', href: 'https://www.quoreit.com/About-Us' },
+    { name: 'CONTACT US', href: 'https://www.quoreit.com/Contact-us' },
   ];
 
   return (
@@ -79,7 +78,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link href="/" className="block">
+            <Link href="https://www.quoreit.com/" className="block">
               <Image
                 src={logo}
                 alt="Harvey Nash Logo"
