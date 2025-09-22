@@ -1,4 +1,4 @@
-
+import { baseURL } from '@/config/api';
 
 export const metadata = {
   title: ' Latest Technology & Startup Insights',
