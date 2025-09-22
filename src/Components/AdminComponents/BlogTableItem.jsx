@@ -1,7 +1,7 @@
 
 import React from 'react'
 import { useRouter } from 'next/navigation'
-import { EyeIcon, EyeSlashIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { EyeIcon, EyeSlashIcon, TrashIcon ,PencilIcon } from '@heroicons/react/24/outline'
 import { useAppContext } from '@/context/AppContext'
 import toast from 'react-hot-toast'
 import { baseURL } from '@/config/api';
@@ -11,6 +11,10 @@ const BlogTableItem = ({ blog, fetchBlogs, index }) => {
     const BlogDate = blog.createdAt ? new Date(blog.createdAt) : (blog.date ? new Date(blog.date) : null);
     const { axios } = useAppContext();
 
+   const handleEdit = () => {
+     router.push(`/admin/editBlog/${blog._id}`);
+   }
+     
     const handlePublish = async () => {
       try {
         // const baseURL = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000';
@@ -127,6 +131,14 @@ const BlogTableItem = ({ blog, fetchBlogs, index }) => {
             >
               <TrashIcon className="w-4 h-4" />
               <span className="hidden sm:inline">Delete</span>
+            </button>
+                <button
+              className="inline-flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 text-xs font-medium transition-all duration-200 shadow-sm hover:shadow-md"
+              onClick={handleEdit}
+              title="Edit blog"
+            >
+              <PencilIcon className="w-4 h-4" />
+              <span className="hidden sm:inline">Edit</span>
             </button>
           </div>
         </td>
