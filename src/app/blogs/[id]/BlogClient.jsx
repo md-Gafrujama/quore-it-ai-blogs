@@ -1,5 +1,3 @@
-
-
 "use client";
 import { assets } from '@/Assets/assets';
 import Footer from '@/Components/Footer';
@@ -40,7 +38,13 @@ const BlogClient = ({ slug }) => {
       "@type": "BlogPosting",
       "headline": blog.title,
       "description": blog.description?.replace(/<[^>]+>/g, '').slice(0, 160),
-      "image": blog.image,
+      "image": {
+        "@type": "ImageObject",
+        "url": blog.image,
+        "width": 1920,
+        "height": 1080,
+        "aspectRatio": "16:9"
+      },
       "author": {
         "@type": "Person",
         "name": blog.author || "Admin"
@@ -232,7 +236,7 @@ const BlogClient = ({ slug }) => {
   // Blog Not Found Component
   const BlogNotFound = () => (
     <>
-      <div className='min-h-screen bg-gradient-to-br from-[#294944] via-[#386861] to-[#294944] flex items-center justify-center px-3 sm:px-6 md:px-12 lg:px-28 pt-12 sm:pt-16 md:pt-20 pb-12 sm:pb-10 relative'>
+      <div className='min-h-screen bg-[#00CC91] flex items-center justify-center px-3 sm:px-6 md:px-12 lg:px-28 pt-12 sm:pt-16 md:pt-20 pb-12 sm:pb-10 relative'>
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -357,8 +361,8 @@ const BlogClient = ({ slug }) => {
         />
       </Head>
       
-      {/* Hero Section with Green/Yellow theme to match navbar */}
-      <div className='relative bg-gradient-to-br from-[#294944] via-[#386861] to-[#294944] py-20 px-5 md:px-12 lg:px-28 overflow-hidden'>
+      {/* Hero Section */}
+      <div className='relative bg-[#00CC91] py-20 px-5 md:px-12 lg:px-28 overflow-hidden'>
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -373,9 +377,9 @@ const BlogClient = ({ slug }) => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className='inline-block bg-[#F7D270]/20 backdrop-blur-sm border border-[#F7D270]/30 rounded-full px-4 py-2 mb-6'
+              className='inline-block bg-[#EEC764] backdrop-blur-sm border border-gray-600 rounded-full px-4 py-2 mb-6'
             >
-              <span className='text-[#F7D270] text-sm font-medium'>{data.category}</span>
+              <span className='text-[#008000] text-sm font-medium'>{data.category}</span>
             </motion.div>
             
             <motion.h1 
@@ -394,7 +398,7 @@ const BlogClient = ({ slug }) => {
               className='flex flex-col md:flex-row items-center justify-center gap-6 text-[#E5F2EF]'
             >
               <div className='flex items-center gap-3'>
-                <div className='w-10 h-10 bg-gradient-to-r from-[#386861] to-[#294944] rounded-full flex items-center justify-center text-white font-semibold'>
+                <div className='w-10 h-10 bg-[#EEC764] rounded-full flex items-center justify-center text-[#008000] font-semibold'>
                   {data.author?.charAt(0) || 'A'}
                 </div>
                 <span className='text-lg font-medium'>By {data.author}</span>
@@ -426,22 +430,24 @@ const BlogClient = ({ slug }) => {
             transition={{ duration: 0.8, delay: 0.6 }}
             className='relative'
           >
-            <Image 
-              className='rounded-2xl w-full shadow-2xl bg-white' 
-              src={data.image} 
-              width={1200} 
-              height={600} 
-              alt={data.title}
-              style={{ 
-                aspectRatio: '2/1', 
-                objectFit: 'cover', 
-                objectPosition: 'center',
-                width: '100%',
-                height: '600px',
-                maxHeight: '600px',
-                minHeight: '600px'
-              }}
-            />
+            {/* Updated Image with 16:9 aspect ratio */}
+            <div className="relative w-full bg-white rounded-2xl p-2 shadow-2xl">
+              <Image 
+                className='rounded-2xl w-full' 
+                src={data.image} 
+                width={1920} 
+                height={1080} 
+                alt={data.title}
+                style={{ 
+                  aspectRatio: '16/9', 
+                  objectFit: 'cover', 
+                  objectPosition: 'center',
+                  width: '100%',
+                  height: 'auto'
+                }}
+                priority
+              />
+            </div>
           </motion.div>
           
           {/* Premium Blog Content Format */}
@@ -723,10 +729,9 @@ const BlogClient = ({ slug }) => {
                   border-radius: 16px;
                   width: 85%;
                   max-width: 900px;
-                  max-height: 520px;
                   height: auto;
                   display: block;
-                  object-fit: contain;
+                  object-fit: cover;
                   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                   box-shadow: 
                     0 0 0 1px rgba(0, 0, 0, 0.05),
@@ -734,12 +739,12 @@ const BlogClient = ({ slug }) => {
                     0 20px 40px -7px rgba(0, 0, 0, 0.1);
                   position: relative;
                   filter: brightness(0.92) saturate(0.95);
+                  aspect-ratio: 16/9;
                 }
 
                 @media (max-width: 768px) {
                   .blog-content-wrapper img {
                     width: 100%;
-                    max-height: 360px;
                   }
                 }
                 
@@ -905,7 +910,7 @@ const BlogClient = ({ slug }) => {
             className="p-8 md:p-12 my-16"
           >
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-8 bg-gradient-to-r from-[#386861] to-[#294944] rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-[#00d78c] rounded-full flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
@@ -942,7 +947,7 @@ const BlogClient = ({ slug }) => {
             </div>
             
             {/* Comment Form */}
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-2xl border border-blue-100">
+            <div className="bg-gradient-to-br from-teal-50 to-emerald-50 p-8 rounded-2xl border border-green-100">
               <h3 className="text-xl font-semibold mb-6 text-gray-900">Join the conversation</h3>
               <form onSubmit={addComment} className="space-y-6">
                 <div>
@@ -969,7 +974,7 @@ const BlogClient = ({ slug }) => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-[#386861] text-[#F7D270] px-8 py-3 rounded-xl hover:bg-[#294944] transition-all duration-300 font-medium disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg hover:shadow-xl"
+                  className="bg-[#00d78c] text-[#FFFFFF] px-8 py-3 rounded-xl hover:bg-[#1ee8ab] transition-all duration-300 font-medium disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg hover:shadow-xl"
                 >
                   {isSubmitting ? (
                     <>
@@ -1022,7 +1027,7 @@ const BlogClient = ({ slug }) => {
                 <button 
                   type="submit" 
                   disabled={isSubscribing}
-                  className='bg-black text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 whitespace-nowrap'
+                  className='bg-[#00d78c] text-white px-8 py-4 rounded-xl font-semibold hover:bg-[#1ee8ab] transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 whitespace-nowrap'
                 >
                   {isSubscribing ? (
                     <>
@@ -1064,7 +1069,7 @@ const BlogClient = ({ slug }) => {
             transition={{ duration: 0.8, delay: 1.4 }}
             className='p-8 my-16 text-center'
           >
-            <div className="w-12 h-12 bg-gradient-to-r from-[#386861] to-[#294944] rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-12 h-12 bg-[#00d78c] rounded-full flex items-center justify-center mx-auto mb-6">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
               </svg>
@@ -1075,7 +1080,7 @@ const BlogClient = ({ slug }) => {
             <div className='flex justify-center gap-4 flex-wrap'>
               <button
                 onClick={() => handleSocialShare('facebook')}
-                className="group bg-[#386861] hover:bg-[#294944] text-white p-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                className="group bg-[#1877F2] hover:bg-[#166FE5] text-white p-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
                 title="Share on Facebook"
               >
                 <FontAwesomeIcon icon={faFacebookF} className="text-xl group-hover:scale-110 transition-transform duration-300" />
@@ -1083,7 +1088,7 @@ const BlogClient = ({ slug }) => {
 
               <button
                 onClick={() => handleSocialShare('twitter')}
-                className="group bg-[#F7D270] hover:bg-[#eac25f] text-[#294944] p-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                className="group bg-[#1DA1F2] hover:bg-[#1A91DA] text-white p-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
                 title="Share on Twitter"
               >
                 <FontAwesomeIcon icon={faTwitter} className="text-xl group-hover:scale-110 transition-transform duration-300" />
@@ -1091,7 +1096,7 @@ const BlogClient = ({ slug }) => {
 
               <button
                 onClick={() => handleSocialShare('googleplus')}
-                className="group bg-[#386861] hover:bg-[#294944] text-white p-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                className="group bg-[#DD4B39] hover:bg-[#C23321] text-white p-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
                 title="Share on Google Plus"
               >
                 <FontAwesomeIcon icon={faGooglePlusG} className="text-xl group-hover:scale-110 transition-transform duration-300" />
@@ -1099,7 +1104,7 @@ const BlogClient = ({ slug }) => {
 
               <button
                 onClick={() => handleSocialShare('linkedin')}
-                className="group bg-[#F7D270] hover:bg-[#eac25f] text-[#294944] p-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                className="group bg-[#0A66C2] hover:bg-[#004182] text-white p-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
                 title="Share on LinkedIn"
               >
                 <FontAwesomeIcon icon={faLinkedinIn} className="text-xl group-hover:scale-110 transition-transform duration-300" />
@@ -1113,7 +1118,6 @@ const BlogClient = ({ slug }) => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.6 }}
-              // className="my-24 bg-gradient-to-br from-white to-[#F7F7D0]/40 py-16 px-6 rounded-3xl"
             >
               <div className="text-center mb-12">
                 <div className="inline-flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-lg border border-[#E8F1EF] mb-6">
@@ -1144,8 +1148,8 @@ const BlogClient = ({ slug }) => {
                     onClick={() => window.location.href = `/blogs/${blog.slug}`}
                   >
                     <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-lg hover:border-gray-200 h-full flex flex-col">
-                      {/* Fixed height image container */}
-                      <div className="relative h-48 overflow-hidden bg-gray-100">
+                      {/* Updated 16:9 aspect ratio image container */}
+                      <div className="relative overflow-hidden bg-gray-100" style={{ aspectRatio: '16/9' }}>
                         <img
                           src={blog.image}
                           alt={blog.title}
