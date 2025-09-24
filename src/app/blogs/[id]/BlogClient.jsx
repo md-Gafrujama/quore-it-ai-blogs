@@ -12,7 +12,7 @@ import { motion } from 'framer-motion';
 import NavbarNew from "@/Components/Navbar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faTwitter, faGooglePlusG, faLinkedinIn } from '@fortawesome/free-brands-svg-icons';
-import { baseURL, company } from '@/config/api';
+import { baseURL , company} from '@/config/api';
 
 const BlogClient = ({ slug }) => {
   const [isSubscribing, setIsSubscribing] = useState(false);
@@ -21,10 +21,11 @@ const BlogClient = ({ slug }) => {
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Email subscription state variables
   const [email, setEmail] = useState('');
-  const [relatedBlogs, setRelatedBlogs] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const inputRef = useRef(null);
+  // Related blogs state
+  const [relatedBlogs, setRelatedBlogs] = useState([]);
 
   // Generate structured data for SEO
   const generateStructuredData = (blog) => {
@@ -81,13 +82,8 @@ const BlogClient = ({ slug }) => {
 
   // Fetch blog data
   const fetchBlogData = async () => {
-    if (!slug) {
-      setIsLoading(false);
-      return;
-    }
-    
+    if (!slug) return;
     try {
-      setIsLoading(true);
       const response = await axios.get(`${baseURL}/api/blog/slug/${slug}`);
       if (response.data.success && response.data.blog && response.data.blog.company === company) {
         setData(response.data.blog);
@@ -97,8 +93,6 @@ const BlogClient = ({ slug }) => {
     } catch (error) {
       console.error('Error fetching blog data:', error);
       setData(null);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -107,39 +101,32 @@ const BlogClient = ({ slug }) => {
     if (!slug) return;
     try {
       const res = await axios.post(`${baseURL}/api/blog/comments`, { blogSlug: slug });
-      if (res.data.success) setComments(res.data.comments || []);
+      if (res.data.success) setComments(res.data.comments);
     } catch (error) {
       console.error('Error fetching comments:', error);
-      setComments([]);
     }
   };
 
   // Add comment
   const addComment = async (e) => {
     e.preventDefault();
-    if (!name.trim() || !content.trim()) {
-      toast.error('Please fill in all fields');
-      return;
-    }
-    
+    if (!name.trim() || !content.trim()) return;
     setIsSubmitting(true);
     try {
       const res = await axios.post(`${baseURL}/api/blog/add-comment`, {
         blog: data._id,
-        name: name.trim(),
-        content: content.trim(),
+        name,
+        content,
       });
       if (res.data.success) {
         setName('');
         setContent('');
         fetchComments();
         toast.success('Comment added successfully!');
-      } else {
-        toast.error(res.data.message || 'Error adding comment');
       }
     } catch (error) {
       console.error('Error adding comment:', error);
-      toast.error(error.response?.data?.message || 'Error adding comment');
+      toast.error('Error adding comment');
     } finally {
       setIsSubmitting(false);
     }
@@ -153,7 +140,6 @@ const BlogClient = ({ slug }) => {
     const description = encodeURIComponent(
       data.description?.replace(/<[^>]+>/g, '').slice(0, 160) || ''
     );
-    
     let shareUrl = '';
     switch (platform) {
       case 'facebook':
@@ -171,7 +157,6 @@ const BlogClient = ({ slug }) => {
       default:
         return;
     }
-    
     window.open(
       shareUrl,
       'share-dialog',
@@ -179,18 +164,12 @@ const BlogClient = ({ slug }) => {
     );
   };
 
-  // Email subscription handler
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     const trimmed = (email || '').trim();
 
     if (!trimmed) {
       toast.error('Please enter your email');
-      return;
-    }
-
-    if (!/\S+@\S+\.\S+/.test(trimmed)) {
-      toast.error('Please enter a valid email address');
       return;
     }
 
@@ -227,6 +206,13 @@ const BlogClient = ({ slug }) => {
     }
   };
 
+  useEffect(() => {
+    if (slug) {
+      fetchBlogData();
+      fetchComments();
+    }
+  }, [slug]);
+
   // Fetch related blogs after main blog is loaded
   useEffect(() => {
     if (data && data.category) {
@@ -235,28 +221,17 @@ const BlogClient = ({ slug }) => {
           const response = await axios.get(`${baseURL}/api/blog/all`);
           if (response.data.success) {
             const related = response.data.blogs.filter(
-              (b) => b.category === data.category && 
-                     b.slug !== data.slug && 
-                     b.isPublished !== false && 
-                     b.company === company
+              (b) => b.category === data.category && b.slug !== data.slug && b.isPublished !== false && b.company === company
             ).slice(0, 3);
             setRelatedBlogs(related);
           }
         } catch (err) {
-          console.error('Error fetching related blogs:', err);
           setRelatedBlogs([]);
         }
       };
       fetchRelated();
     }
   }, [data]);
-
-  useEffect(() => {
-    if (slug) {
-      fetchBlogData();
-      fetchComments();
-    }
-  }, [slug]);
 
   // Blog Not Found Component
   const BlogNotFound = () => (
@@ -376,49 +351,10 @@ const BlogClient = ({ slug }) => {
     </>
   );
 
-  // Loading Component
-  const LoadingComponent = () => (
-    <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-[#294944] via-[#386861] to-[#294944]'>
-      <div className='text-center max-w-md mx-auto p-8'>
-        <div className="relative w-20 h-20 mx-auto mb-8">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#F7D270] to-[#eac25f] rounded-full animate-ping opacity-20"></div>
-          <div className="relative w-20 h-20 bg-gradient-to-r from-[#F7D270] to-[#eac25f] rounded-full flex items-center justify-center">
-            <svg className="animate-spin h-8 w-8 text-[#294944]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-          </div>
-        </div>
-        <h2 className='text-2xl font-semibold text-white mb-4'>Loading your content</h2>
-        <p className='text-gray-200'>Please wait while we prepare your reading experience...</p>
-      </div>
-    </div>
-  );
-
-  // Main render logic
-  if (isLoading) {
-    return <LoadingComponent />;
-  }
-
-  if (data === null) {
-    return <BlogNotFound />;
-  }
-
-  return (
+  return (data ? (
     <>
-      <NavbarNew />
+      <NavbarNew/>
       <Head>
-        <title>{data.title} - AI Blog</title>
-        <meta name="description" content={data.description?.replace(/<[^>]+>/g, '').slice(0, 160)} />
-        <meta property="og:title" content={data.title} />
-        <meta property="og:description" content={data.description?.replace(/<[^>]+>/g, '').slice(0, 160)} />
-        <meta property="og:image" content={data.image} />
-        <meta property="og:url" content={`${baseURL}/blogs/${slug}`} />
-        <meta property="og:type" content="article" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={data.title} />
-        <meta name="twitter:description" content={data.description?.replace(/<[^>]+>/g, '').slice(0, 160)} />
-        <meta name="twitter:image" content={data.image} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(generateStructuredData(data)) }}
@@ -465,7 +401,7 @@ const BlogClient = ({ slug }) => {
                 <div className='w-10 h-10 bg-[#EEC764] rounded-full flex items-center justify-center text-[#008000] font-semibold'>
                   {data.author?.charAt(0) || 'A'}
                 </div>
-                <span className='text-lg font-medium'>By {data.author || 'Admin'}</span>
+                <span className='text-lg font-medium'>By {data.author}</span>
               </div>
               
               <div className='flex items-center gap-2 text-[#E5F2EF]'>
@@ -1138,8 +1074,8 @@ const BlogClient = ({ slug }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
               </svg>
             </div>
-            <h3 className='text-2xl font-bold mb-4'>Share this article</h3>
-            <p className='text-gray-600 mb-6'>Spread the knowledge with your network</p>
+            <h3 className='text-2xl font-bold  mb-4'>Share this article</h3>
+            <p className='text-600 mb-6'>Spread the knowledge with your network</p>
             
             <div className='flex justify-center gap-4 flex-wrap'>
               <button
@@ -1302,7 +1238,25 @@ const BlogClient = ({ slug }) => {
       
       <Footer />
     </>
-  );
+  ) : data === null ? (
+    <BlogNotFound />
+  ) : (
+    <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-[#294944] via-[#386861] to-[#294944]'>
+      <div className='text-center max-w-md mx-auto p-8'>
+        <div className="relative w-20 h-20 mx-auto mb-8">
+          <div className="absolute inset-0 bg-gradient-to-r from-[#F7D270] to-[#eac25f] rounded-full animate-ping opacity-20"></div>
+          <div className="relative w-20 h-20 bg-gradient-to-r from-[#F7D270] to-[#eac25f] rounded-full flex items-center justify-center">
+            <svg className="animate-spin h-8 w-8 text-[#294944]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </div>
+        </div>
+        <h2 className='text-2xl font-semibold text-white mb-4'>Loading your content</h2>
+        <p className='text-gray-200'>Please wait while we prepare your reading experience...</p>
+      </div>
+    </div>
+  ));
 };
 
 export default BlogClient;
