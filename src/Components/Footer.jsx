@@ -371,19 +371,8 @@ export default function Footer() {
                 ))}
               </div>
 
-              {/* Trust Metrics */}
-              <div className="pt-6 space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-2">
-                    {[...Array(4)].map((_, i) => (
-                      <div key={i} className="w-6 h-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full border-2 border-slate-900 flex items-center justify-center">
-                        <span className="text-white text-xs font-bold">{i + 1}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <span className="text-slate-400 text-sm">500+ Companies Trust Us</span>
-                </div>
-              </div>
+        
+              
             </div>
 
             {/* Professional Services Section */}
