@@ -228,7 +228,7 @@ export default function Footer() {
                 {[
             
                   { Icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/company/quore-it/" },
-                  {/* { Icon: Twitter, label: "Twitter", href: "#" }, */}
+                  
                 ].map(({ Icon, label, href }, idx) => (
                   <Link
                     key={idx}
