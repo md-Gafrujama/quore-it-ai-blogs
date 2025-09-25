@@ -99,7 +99,7 @@ export default function Footer() {
                 {[
                   { Icon: Mail, text: "contactus@quoreit.com", label: "Email" },
                   { Icon: Phone, text: "+1 332-231-0404", label: "Phone" },
-                  { Icon: MapPin, text: "Global Offices Worldwide", label: "Location" }
+                 
                 ].map(({ Icon, text, label }, idx) => (
                   <div key={idx} className="flex items-center text-slate-300 hover:text-green-400 transition-all duration-300 group cursor-pointer">
                     <div className="relative">
