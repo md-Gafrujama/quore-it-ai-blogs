@@ -135,11 +135,15 @@ const BlogClient = ({ slug }) => {
   // Social share handler with enhanced metadata
   const handleSocialShare = (platform) => {
     if (!data) return;
-    const url = encodeURIComponent(`${baseURL}/blogs/${slug}`);
+    
+    // Use current window location for accurate URL
+    const currentUrl = window.location.href;
+    const url = encodeURIComponent(currentUrl);
     const title = encodeURIComponent(data.title);
     const description = encodeURIComponent(
       data.description?.replace(/<[^>]+>/g, '').slice(0, 160) || ''
     );
+    
     let shareUrl = '';
     switch (platform) {
       case 'facebook':
@@ -149,7 +153,8 @@ const BlogClient = ({ slug }) => {
         shareUrl = `https://twitter.com/intent/tweet?text=${title}&url=${url}&hashtags=blog,article`;
         break;
       case 'linkedin':
-        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+        // LinkedIn sharing with proper parameters
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${title}&summary=${description}`;
         break;
       case 'googleplus':
         shareUrl = `https://plus.google.com/share?url=${url}`;
@@ -157,11 +162,10 @@ const BlogClient = ({ slug }) => {
       default:
         return;
     }
-    window.open(
-      shareUrl,
-      'share-dialog',
-      'width=600,height=500,resizable=yes,scrollbars=yes'
-    );
+    
+    // Open in new window with proper dimensions
+    const windowFeatures = 'width=600,height=500,resizable=yes,scrollbars=yes,status=yes,menubar=no,toolbar=no,location=no';
+    window.open(shareUrl, 'share-dialog', windowFeatures);
   };
 
   const onSubmitHandler = async (e) => {

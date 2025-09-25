@@ -58,6 +58,9 @@ export async function generateMetadata({ params }) {
     const publishDate = blog.date || blog.createdAt;
     const modifiedDate = blog.updatedAt || publishDate;
 
+    // Ensure image URL is absolute for proper LinkedIn sharing
+    const imageUrl = blog.image?.startsWith('http') ? blog.image : `${baseUrl}${blog.image}`;
+
     return {
       title: `${blog.title} - AI Blog`,
       description: cleanDescription,
@@ -84,15 +87,14 @@ export async function generateMetadata({ params }) {
         siteName: 'AI Blog',
         images: [
           {
-            url: blog.image,
+            url: imageUrl,
             width: 1200,
             height: 630,
             alt: blog.title,
             type: 'image/jpeg',
           },
-          // Additional image format for better compatibility
           {
-            url: blog.image,
+            url: imageUrl,
             width: 1920,
             height: 1080,
             alt: blog.title,
@@ -111,7 +113,7 @@ export async function generateMetadata({ params }) {
         card: 'summary_large_image',
         title: blog.title,
         description: cleanDescription,
-        images: [blog.image],
+        images: [imageUrl],
         creator: '@yourhandle',
         site: '@yourhandle',
       },
@@ -133,11 +135,12 @@ export async function generateMetadata({ params }) {
         'article:section': blog.category,
         'article:tag': blog.category,
         // Explicit og tags for better LinkedIn compatibility
-        'og:image': blog.image,
+        'og:image': imageUrl,
         'og:image:width': '1200',
         'og:image:height': '630',
         'og:image:alt': blog.title,
         'og:image:type': 'image/jpeg',
+        'og:image:secure_url': imageUrl,
       },
     };
   } catch (error) {
