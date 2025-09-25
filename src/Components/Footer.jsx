@@ -226,7 +226,7 @@ export default function Footer() {
               {/* Professional Social Media Grid */}
               <div className="grid grid-cols-3 gap-4 mb-8">
                 {[
-                  {/* { Icon: Facebook, label: "Facebook", href: "#" }, */}
+            
                   { Icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/company/quore-it/" },
                   {/* { Icon: Twitter, label: "Twitter", href: "#" }, */}
                 ].map(({ Icon, label, href }, idx) => (
