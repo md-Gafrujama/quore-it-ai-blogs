@@ -40,12 +40,19 @@ export async function generateMetadata({ params }) {
 
     console.log('Generating metadata for blog:', blog.title);
 
-    const cleanDescription =
-      blog.description
-        ?.replace(/<[^>]+>/g, '') // Remove HTML tags
-        ?.replace(/\s+/g, ' ')
-        ?.trim()
-        ?.slice(0, 160) || 'Read this insightful article on AI Blog.';
+    // Ensure description is at least 100 characters for LinkedIn
+    let cleanDescription = blog.description
+      ?.replace(/<[^>]+>/g, '') // Remove HTML tags
+      ?.replace(/\s+/g, ' ')
+      ?.trim() || '';
+    
+    // If description is too short, create a longer one
+    if (cleanDescription.length < 100) {
+      cleanDescription = `${blog.title} - Discover insightful content about ${blog.category?.toLowerCase() || 'technology'} and more. Read this comprehensive article that explores key concepts, practical insights, and expert perspectives to enhance your understanding.`;
+    }
+    
+    // Limit to 160 characters for optimal SEO
+    cleanDescription = cleanDescription.slice(0, 160);
 
     const blogUrl = `${baseUrl}/blogs/${blog.slug}`;
     const publishDate = blog.date || blog.createdAt;
@@ -83,6 +90,14 @@ export async function generateMetadata({ params }) {
             alt: blog.title,
             type: 'image/jpeg',
           },
+          // Additional image format for better compatibility
+          {
+            url: blog.image,
+            width: 1920,
+            height: 1080,
+            alt: blog.title,
+            type: 'image/jpeg',
+          },
         ],
         locale: 'en_US',
         type: 'article',
@@ -117,6 +132,12 @@ export async function generateMetadata({ params }) {
         'article:author': blog.author || 'Admin',
         'article:section': blog.category,
         'article:tag': blog.category,
+        // Explicit og tags for better LinkedIn compatibility
+        'og:image': blog.image,
+        'og:image:width': '1200',
+        'og:image:height': '630',
+        'og:image:alt': blog.title,
+        'og:image:type': 'image/jpeg',
       },
     };
   } catch (error) {
@@ -124,7 +145,7 @@ export async function generateMetadata({ params }) {
     return {
       title: 'Blog - AI Blog',
       description:
-        'Read insightful articles on technology, startups, and lifestyle.',
+        'Read insightful articles on technology, startups, and lifestyle. Discover comprehensive content that explores innovative ideas, practical solutions, and expert perspectives to enhance your knowledge and understanding.',
       robots: {
         index: false,
         follow: true,
