@@ -6,11 +6,12 @@ export async function generateMetadata({ params }) {
   console.log('Generating metadata for slug:', slug);
 
   try {
-    // Use API_BASE_URL for server (better than NEXT_PUBLIC_BASE_URL)
-    const baseUrl = process.env.API_BASE_URL || 'http://localhost:5000';
+    // Use the correct base URL for production
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://quore-it-ai-blogs.vercel.app';
     console.log('Using base URL:', baseUrl);
 
-    const apiUrl = `${baseUrl}/api/blog/slug/${slug}`;
+    // Try the external API first since we don't have local API routes
+    const apiUrl = `https://ai-blogs-with-super-admin.vercel.app/api/blog/slug/${slug}`;
     console.log('Fetching from:', apiUrl);
 
     const res = await fetch(apiUrl, {
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }) {
     console.log('API response data:', data);
 
     const blog = data.blog;
-    if (!blog) {
+    if (!blog || (blog.company && blog.company !== 'quoreit')) {
       console.log('No blog found for slug:', slug);
       return {
         title: 'Blog Not Found - AI Blog',
@@ -60,6 +61,13 @@ export async function generateMetadata({ params }) {
 
     // Ensure image URL is absolute for proper LinkedIn sharing
     const imageUrl = blog.image?.startsWith('http') ? blog.image : `${baseUrl}${blog.image}`;
+
+    console.log('Generated metadata for blog:', {
+      title: blog.title,
+      imageUrl,
+      blogUrl,
+      description: cleanDescription
+    });
 
     return {
       title: `${blog.title} - AI Blog`,
@@ -141,6 +149,12 @@ export async function generateMetadata({ params }) {
         'og:image:alt': blog.title,
         'og:image:type': 'image/jpeg',
         'og:image:secure_url': imageUrl,
+        // Additional LinkedIn specific tags
+        'og:title': blog.title,
+        'og:description': cleanDescription,
+        'og:url': blogUrl,
+        'og:type': 'article',
+        'og:site_name': 'AI Blog',
       },
     };
   } catch (error) {
