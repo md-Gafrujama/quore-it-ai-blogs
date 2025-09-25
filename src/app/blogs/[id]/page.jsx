@@ -6,11 +6,12 @@ export async function generateMetadata({ params }) {
   console.log('Generating metadata for slug:', slug);
 
   try {
-    // Use API_BASE_URL for server (better than NEXT_PUBLIC_BASE_URL)
-    const baseUrl = process.env.API_BASE_URL || 'http://localhost:5000';
+    // Use the correct base URL for production
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://quore-it-ai-blogs.vercel.app';
     console.log('Using base URL:', baseUrl);
 
-    const apiUrl = `${baseUrl}/api/blog/slug/${slug}`;
+    // Try the external API first since we don't have local API routes
+    const apiUrl = `https://ai-blogs-with-super-admin.vercel.app/api/blog/slug/${slug}`;
     console.log('Fetching from:', apiUrl);
 
     const res = await fetch(apiUrl, {
@@ -26,7 +27,7 @@ export async function generateMetadata({ params }) {
     console.log('API response data:', data);
 
     const blog = data.blog;
-    if (!blog) {
+    if (!blog || (blog.company && blog.company !== 'quoreit')) {
       console.log('No blog found for slug:', slug);
       return {
         title: 'Blog Not Found - AI Blog',
@@ -40,16 +41,34 @@ export async function generateMetadata({ params }) {
 
     console.log('Generating metadata for blog:', blog.title);
 
-    const cleanDescription =
-      blog.description
-        ?.replace(/<[^>]+>/g, '') // Remove HTML tags
-        ?.replace(/\s+/g, ' ')
-        ?.trim()
-        ?.slice(0, 160) || 'Read this insightful article on AI Blog.';
+    // Ensure description is at least 100 characters for LinkedIn
+    let cleanDescription = blog.description
+      ?.replace(/<[^>]+>/g, '') // Remove HTML tags
+      ?.replace(/\s+/g, ' ')
+      ?.trim() || '';
+    
+    // If description is too short, create a longer one
+    if (cleanDescription.length < 100) {
+      cleanDescription = `${blog.title} - Discover insightful content about ${blog.category?.toLowerCase() || 'technology'} and more. Read this comprehensive article that explores key concepts, practical insights, and expert perspectives to enhance your understanding.`;
+    }
+    
+    // Limit to 160 characters for optimal SEO
+    cleanDescription = cleanDescription.slice(0, 160);
 
     const blogUrl = `${baseUrl}/blogs/${blog.slug}`;
     const publishDate = blog.date || blog.createdAt;
     const modifiedDate = blog.updatedAt || publishDate;
+
+    // Ensure image URL is absolute for proper LinkedIn sharing
+    const imageUrl = blog.image?.startsWith('http') ? blog.image : `${baseUrl}${blog.image}`;
+
+    console.log('Generated metadata for blog:', {
+      title: blog.title,
+      author: blog.author,
+      imageUrl,
+      blogUrl,
+      description: cleanDescription
+    });
 
     return {
       title: `${blog.title} - AI Blog`,
@@ -77,9 +96,16 @@ export async function generateMetadata({ params }) {
         siteName: 'AI Blog',
         images: [
           {
-            url: blog.image,
+            url: imageUrl,
             width: 1200,
             height: 630,
+            alt: blog.title,
+            type: 'image/jpeg',
+          },
+          {
+            url: imageUrl,
+            width: 1920,
+            height: 1080,
             alt: blog.title,
             type: 'image/jpeg',
           },
@@ -96,7 +122,7 @@ export async function generateMetadata({ params }) {
         card: 'summary_large_image',
         title: blog.title,
         description: cleanDescription,
-        images: [blog.image],
+        images: [imageUrl],
         creator: '@yourhandle',
         site: '@yourhandle',
       },
@@ -117,6 +143,22 @@ export async function generateMetadata({ params }) {
         'article:author': blog.author || 'Admin',
         'article:section': blog.category,
         'article:tag': blog.category,
+        // Explicit og tags for better LinkedIn compatibility
+        'og:image': imageUrl,
+        'og:image:width': '1200',
+        'og:image:height': '630',
+        'og:image:alt': blog.title,
+        'og:image:type': 'image/jpeg',
+        'og:image:secure_url': imageUrl,
+        // Additional LinkedIn specific tags
+        'og:title': blog.title,
+        'og:description': cleanDescription,
+        'og:url': blogUrl,
+        'og:type': 'article',
+        'og:site_name': 'AI Blog',
+        // Author metadata for LinkedIn
+        'author': blog.author || 'Admin',
+        'og:article:author': blog.author || 'Admin',
       },
     };
   } catch (error) {
@@ -124,7 +166,7 @@ export async function generateMetadata({ params }) {
     return {
       title: 'Blog - AI Blog',
       description:
-        'Read insightful articles on technology, startups, and lifestyle.',
+        'Read insightful articles on technology, startups, and lifestyle. Discover comprehensive content that explores innovative ideas, practical solutions, and expert perspectives to enhance your knowledge and understanding.',
       robots: {
         index: false,
         follow: true,
