@@ -64,6 +64,7 @@ export async function generateMetadata({ params }) {
 
     console.log('Generated metadata for blog:', {
       title: blog.title,
+      author: blog.author,
       imageUrl,
       blogUrl,
       description: cleanDescription
@@ -155,6 +156,9 @@ export async function generateMetadata({ params }) {
         'og:url': blogUrl,
         'og:type': 'article',
         'og:site_name': 'AI Blog',
+        // Author metadata for LinkedIn
+        'author': blog.author || 'Admin',
+        'og:article:author': blog.author || 'Admin',
       },
     };
   } catch (error) {
