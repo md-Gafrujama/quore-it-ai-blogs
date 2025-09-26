@@ -435,24 +435,24 @@ const BlogClient = ({ slug }) => {
             transition={{ duration: 0.8, delay: 0.6 }}
             className='relative'
           >
-            {/* Improved Image Container - Fixed aspect ratio with better object positioning */}
-            <div className="relative w-full bg-white rounded-2xl p-2 shadow-2xl">
-              <Image 
-                className='rounded-2xl w-full' 
-                src={data.image} 
-                width={1920} 
-                height={1080} 
-                alt={data.title}
-                style={{ 
-                  aspectRatio: '16/9', 
-                  objectFit: 'contain', // Changed from 'cover' to 'contain' to prevent cropping
-                  objectPosition: 'center',
-                  width: '100%',
-                  height: 'auto',
-                  backgroundColor: '#f8fafc' // Light background for letterboxing if needed
-                }}
-                priority
-              />
+            {/* Fixed Image Container with proper 16:9 aspect ratio */}
+            <div className="relative w-full bg-white rounded-2xl p-3 shadow-2xl">
+              <div className="relative w-full overflow-hidden rounded-xl" style={{ aspectRatio: '16/9' }}>
+                <Image 
+                  className='w-full h-full object-cover' 
+                  src={data.image} 
+                  width={1920} 
+                  height={1080} 
+                  alt={data.title}
+                  style={{ 
+                    objectFit: 'cover', 
+                    objectPosition: 'center top',
+                    width: '100%',
+                    height: '100%'
+                  }}
+                  priority
+                />
+              </div>
             </div>
           </motion.div>
           
@@ -733,11 +733,10 @@ const BlogClient = ({ slug }) => {
                 .blog-content-wrapper img {
                   margin: 2rem auto;
                   border-radius: 16px;
-                  width: 90%;
-                  max-width: 950px;
+                  width: 92%;
+                  max-width: 980px;
                   height: auto;
                   display: block;
-                  object-fit: contain;
                   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                   box-shadow: 
                     0 0 0 1px rgba(0, 0, 0, 0.05),
@@ -746,8 +745,10 @@ const BlogClient = ({ slug }) => {
                   position: relative;
                   filter: brightness(0.95) saturate(1.02);
                   aspect-ratio: 16/9;
+                  object-fit: cover;
                   background-color: #f8fafc;
-                  padding: 8px;
+                  padding: 6px;
+                  overflow: hidden;
                 }
 
                 @media (max-width: 768px) {
@@ -758,7 +759,7 @@ const BlogClient = ({ slug }) => {
                 }
                 
                 .blog-content-wrapper img:hover {
-                  transform: translateY(-4px) scale(1.01);
+                  transform: translateY(-4px) scale(1.02);
                   box-shadow: 
                     0 0 0 1px rgba(0, 0, 0, 0.05),
                     0 25px 50px -12px rgba(0, 0, 0, 0.15),
@@ -1162,13 +1163,12 @@ const BlogClient = ({ slug }) => {
                         <img
                           src={blog.image}
                           alt={blog.title}
-                          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
-                          style={{ backgroundColor: '#f8fafc' }}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                           loading="lazy"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent"></div>
                         
-                        {/* Category badge */}
+                                              {/* Category badge */}
                         <div className="absolute top-3 left-3">
                           <span className="bg-white/90 backdrop-blur-sm text-[#294944] text-xs font-semibold px-3 py-1 rounded-full border border-white/20 shadow-sm">
                             {blog.category}
