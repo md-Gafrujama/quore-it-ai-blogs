@@ -41,8 +41,8 @@ const BlogClient = ({ slug }) => {
       "image": {
         "@type": "ImageObject",
         "url": blog.image,
-        "width": 1920,
-        "height": 1080,
+        "width": 1921,
+        "height": 1081,
         "aspectRatio": "16:9"
       },
       "author": {
@@ -435,13 +435,13 @@ const BlogClient = ({ slug }) => {
             transition={{ duration: 0.8, delay: 0.6 }}
             className='relative'
           >
-            {/* Updated Image with 16:9 aspect ratio */}
+            {/* Updated Image with increased size (1 point) */}
             <div className="relative w-full bg-white rounded-2xl p-2 shadow-2xl">
               <Image 
                 className='rounded-2xl w-full' 
                 src={data.image} 
-                width={1920} 
-                height={1080} 
+                width={1921} 
+                height={1081} 
                 alt={data.title}
                 style={{ 
                   aspectRatio: '16/9', 
@@ -732,8 +732,8 @@ const BlogClient = ({ slug }) => {
                 .blog-content-wrapper img {
                   margin: 2rem auto;
                   border-radius: 16px;
-                  width: 85%;
-                  max-width: 900px;
+                  width: 86%;
+                  max-width: 901px;
                   height: auto;
                   display: block;
                   object-fit: cover;
