@@ -6,19 +6,23 @@ import { baseURL, company } from "@/config/api";
 
 const Company = company;
 
-// Blog categories
+// Blog categories - matching addBlog subcategories
 const blogCategories = [
   "All",
-  "ABM",
-  "Advertising",
-  "Content Creation",
-  "Demand Generation",
-  "Intent Data",
-  "Sales",
+  "Staffing Solutions",
+  "Recruitment Services",
+  "Talent Acquisition",
+  "Workforce Solutions",
+  "Contract Staffing",
+  "Permanent Staffing",
+  "Temp-to-Hire",
+  "Outsourced Recruitment",
+  "Hiring Solutions",
+  "Executive Search"
 ];
 
 const BlogCard = ({ blog, index }) => {
-  const { title, description = "", category, image, _id, slug } = blog;
+  const { title, description = "", category, subcategory, image, _id, slug } = blog;
   const [isHovered, setIsHovered] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -77,10 +81,10 @@ const BlogCard = ({ blog, index }) => {
           />
 
           {/* Category Badge */}
-          {category && (
+          {(subcategory || category) && (
             <div className="absolute top-3 left-3">
               <span className="bg-white/90 text-gray-800 text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
-                {category}
+                {subcategory || category}
               </span>
             </div>
           )}
@@ -147,8 +151,8 @@ const FilterButton = ({ category, isActive, onClick, index }) => (
     onClick={onClick}
     className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 relative overflow-hidden ${
       isActive
-        ? "bg-[#F7D270] text-[#294944] shadow-lg"
-        : "bg-white text-[#294944] hover:bg-[#F7D270]/20 border border-gray-200"
+        ? "bg-[#00D7A4] text-white shadow-lg"
+        : "bg-white text-[#294944] hover:bg-[#00D7A4]/20 border border-gray-200"
     }`}
   >
     <motion.span
@@ -161,7 +165,7 @@ const FilterButton = ({ category, isActive, onClick, index }) => (
     {isActive && (
       <motion.div
         layoutId="activeFilter"
-        className="absolute inset-0 bg-[#F7D270]"
+        className="absolute inset-0 bg-[#00D7A4]"
         initial={false}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       />
@@ -179,7 +183,7 @@ const SearchBar = ({ value, onChange }) => {
     >
       <motion.div
         className={`relative bg-white rounded-2xl shadow-lg transition-all duration-300 ${
-          isFocused ? 'shadow-xl ring-2 ring-[#F7D270]/50' : ''
+          isFocused ? 'shadow-xl ring-2 ring-[#00D7A4]/50' : ''
         }`}
         animate={{ 
           boxShadow: isFocused 
@@ -198,7 +202,7 @@ const SearchBar = ({ value, onChange }) => {
         />
         <motion.div 
           className="absolute left-5 top-1/2 transform -translate-y-1/2"
-          animate={{ scale: isFocused ? 1.1 : 1, color: isFocused ? '#F7D270' : '#9CA3AF' }}
+          animate={{ scale: isFocused ? 1.1 : 1, color: isFocused ? '#00D7A4' : '#9CA3AF' }}
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
@@ -274,6 +278,7 @@ const BlogList = () => {
       (blog) =>
         blog.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         blog.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        blog.subcategory?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         blog.description?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setSearchResults(filtered);
@@ -289,7 +294,7 @@ const BlogList = () => {
   const getFilteredBlogs = () => {
     let filtered = searchResults;
     if (menu !== "All") {
-      filtered = filtered.filter((item) => item.category === menu);
+      filtered = filtered.filter((item) => (item.subcategory || item.category) === menu);
     }
     return filtered;
   };
@@ -458,7 +463,7 @@ const BlogList = () => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => setInput("")}
-                      className="mt-6 px-6 py-3 bg-[#F7D270] text-[#294944] rounded-full font-semibold hover:bg-[#F7D270]/90 transition-colors"
+                      className="mt-6 px-6 py-3 bg-[#00D7A4] text-white rounded-full font-semibold hover:bg-[#00D7A4]/90 transition-colors"
                     >
                       Clear Search
                     </motion.button>

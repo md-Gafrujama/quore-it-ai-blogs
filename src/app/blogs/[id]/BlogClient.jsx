@@ -64,8 +64,8 @@ const BlogClient = ({ slug }) => {
         "@id": blogUrl
       },
       "url": blogUrl,
-      "articleSection": blog.category,
-      "keywords": [blog.category, "blog", "article", "technology", "startup", "lifestyle"],
+      "articleSection": blog.subcategory || blog.category,
+      "keywords": [blog.subcategory || blog.category, "blog", "article", "technology", "startup", "lifestyle"],
       "wordCount": blog.description?.replace(/<[^>]+>/g, '').split(' ').length || 0,
       "commentCount": comments.length,
       "comment": comments.map(comment => ({
@@ -219,13 +219,14 @@ const BlogClient = ({ slug }) => {
 
   // Fetch related blogs after main blog is loaded
   useEffect(() => {
-    if (data && data.category) {
+    if (data && (data.subcategory || data.category)) {
       const fetchRelated = async () => {
         try {
           const response = await axios.get(`${baseURL}/api/blog/all`);
           if (response.data.success) {
+            const currentCategory = data.subcategory || data.category;
             const related = response.data.blogs.filter(
-              (b) => b.category === data.category && b.slug !== data.slug && b.isPublished !== false && b.company === company
+              (b) => (b.subcategory || b.category) === currentCategory && b.slug !== data.slug && b.isPublished !== false && b.company === company
             ).slice(0, 3);
             setRelatedBlogs(related);
           }
@@ -383,7 +384,7 @@ const BlogClient = ({ slug }) => {
               transition={{ duration: 0.8 }}
               className='inline-block bg-[#EEC764] backdrop-blur-sm border border-gray-600 rounded-full px-4 py-2 mb-6'
             >
-              <span className='text-[#008000] text-sm font-medium'>{data.category}</span>
+              <span className='text-[#008000] text-sm font-medium'>{data.subcategory || data.category}</span>
             </motion.div>
             
             <motion.h1 

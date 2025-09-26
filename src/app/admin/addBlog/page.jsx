@@ -12,13 +12,20 @@ import { baseURL } from '@/config/api';
 
 const Page = () => {
   const [isPublished, setIsPublished] = useState(false);
+  const [department, setDepartment] = useState('');
+  const [subcategory, setSubcategory] = useState('');
+  const departmentSubcategories = {
+    Marketing: ['ABM', 'Advertising', 'Content Creation', 'Demand Generation', 'Intent Data'],
+    Tech: ['Staffing Solutions','Recruitment Services','Talent Acquisition','Workforce Solutions','Contract Staffing','Permanent Staffing','Temp-to-Hire','Outsourced Recruitment','Hiring Solutions','Executive Search'],
+    Sales: ['Lead Generation', 'CRM', 'B2B', 'Inside Sales', 'Field Sales']
+  };
   const router = useRouter();
-  const { axios } = useAppContext()
-  const editorRef = useRef(null)
-  const quillRef = useRef(null)
+  const { axios } = useAppContext();
+  const editorRef = useRef(null);
+  const quillRef = useRef(null);
 
-  const [loading, setLoading] = useState(false)
-  const [image, setImage] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState(false);
   const [data, setData] = useState({
     title: '',
     description: '',
@@ -111,34 +118,53 @@ const Page = () => {
     const name = event.target.name
     const value = event.target.value
     setData((data) => ({ ...data, [name]: value }))
+    // Reset subcategory if department changes
+    if (name === 'department') {
+      setDepartment(value);
+      setSubcategory('');
+    }
+    if (name === 'subcategory') {
+      setSubcategory(value);
+    }
   }
 
   const company = localStorage.getItem("company");
   
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    if (!data.title || !data.category || !data.author || !image || !company) {
+    if (!data.title || !department || !subcategory || !data.category || !data.author || !image || !company) {
       toast.error('Please fill all required fields');
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('title', data.title);
     formData.append('description', quillRef.current.root.innerHTML);
     formData.append('category', data.category);
+    formData.append('department', department);
+    formData.append('subcategory', subcategory);
     formData.append('author', data.author);
     formData.append('authorImg', data.authorImg);
     formData.append('image', image);
     formData.append('isPublished', isPublished);
-    formData.append('company', 'quoreit');
+    formData.append('company', company);
 
     try {
       setLoading(true)
       const response = await axios.post(`${baseURL}/api/blog/add`, formData);
       if (response.data.success) {
         toast.success('Blog added successfully!');
+        
+        // Refresh the blog list in the parent component
+        if (typeof window !== 'undefined' && window.refreshBlogList) {
+          window.refreshBlogList();
+        }
+        
+        // Redirect to blog list after a short delay
         setTimeout(() => {
           router.push('/admin/blogList');
+          // Force a full page reload to ensure the latest data is shown
+          router.refresh();
         }, 1500);
       } else {
         toast.error(response.data.message || 'Something went wrong');
@@ -237,22 +263,44 @@ const Page = () => {
             </div>
           </div>
 
+          {/* Department Selection */}
           <div className="mt-8">
-            <p className="text-lg font-semibold text-gray-700 mb-3">Blog Category</p>
-            <select
-              name="category"
-              onChange={onChangeHandler}
-              value={data.category}
-              className="w-full sm:max-w-xs px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 bg-white focus:outline-none focus:border-[#00D7A4] focus:ring-4 focus:ring-teal-100 hover:border-teal-300 transition-all duration-200"
-            >
-              <option value="ABM">ABM</option>
-              <option value="Advertising">Advertising</option>
-              <option value="Content Creation">Content Creation</option>
-              <option value="Demand Generation">Demand Generation</option>
-              <option value="Intent Data">Intent Data</option>
-              <option value="Sales">Sales</option>
-            </select>
+            <p className="text-lg font-semibold text-gray-700 mb-3">Department</p>
+            <div className="flex gap-6">
+              {Object.keys(departmentSubcategories).map(dep => (
+                <label key={dep} className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="department"
+                    value={dep}
+                    checked={department === dep}
+                    onChange={onChangeHandler}
+                    className="accent-[#00D7A4]"
+                  />
+                  <span>{dep}</span>
+                </label>
+              ))}
+            </div>
           </div>
+
+          {/* Subcategory Dropdown */}
+          {department && (
+            <div className="mt-6">
+              <p className="text-lg font-semibold text-gray-700 mb-3">Subcategory</p>
+              <select
+                name="subcategory"
+                onChange={onChangeHandler}
+                value={subcategory}
+                className="w-full sm:max-w-xs px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 bg-white focus:outline-none focus:border-[#00D7A4] focus:ring-4 focus:ring-teal-100 hover:border-teal-300 transition-all duration-200"
+                required
+              >
+                <option value="" disabled>Select subcategory</option>
+                {departmentSubcategories[department].map(sub => (
+                  <option key={sub} value={sub}>{sub}</option>
+                ))}
+              </select>
+            </div>
+          )}
 
           <div className="flex items-start sm:items-center gap-3 mt-8 p-4 bg-gray-50 rounded-xl border border-gray-200">
             <input
