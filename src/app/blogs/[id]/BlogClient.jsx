@@ -435,18 +435,18 @@ const BlogClient = ({ slug }) => {
             transition={{ duration: 0.8, delay: 0.6 }}
             className='relative'
           >
-            {/* Fixed Image Container with proper 16:9 aspect ratio */}
+            {/* Fixed Image Container - Show Full Image */}
             <div className="relative w-full bg-white rounded-2xl p-3 shadow-2xl">
-              <div className="relative w-full overflow-hidden rounded-xl" style={{ aspectRatio: '16/9' }}>
+              <div className="relative w-full overflow-hidden rounded-xl bg-gray-50" style={{ aspectRatio: '16/9' }}>
                 <Image 
-                  className='w-full h-full object-cover' 
+                  className='w-full h-full' 
                   src={data.image} 
                   width={1920} 
                   height={1080} 
                   alt={data.title}
                   style={{ 
-                    objectFit: 'cover', 
-                    objectPosition: 'center top',
+                    objectFit: 'contain', 
+                    objectPosition: 'center',
                     width: '100%',
                     height: '100%'
                   }}
@@ -733,8 +733,8 @@ const BlogClient = ({ slug }) => {
                 .blog-content-wrapper img {
                   margin: 2rem auto;
                   border-radius: 16px;
-                  width: 92%;
-                  max-width: 980px;
+                  width: 95%;
+                  max-width: 1000px;
                   height: auto;
                   display: block;
                   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -743,11 +743,11 @@ const BlogClient = ({ slug }) => {
                     0 10px 25px -5px rgba(0, 0, 0, 0.1),
                     0 20px 40px -7px rgba(0, 0, 0, 0.1);
                   position: relative;
-                  filter: brightness(0.95) saturate(1.02);
+                  filter: brightness(0.95) saturate(1.05);
                   aspect-ratio: 16/9;
-                  object-fit: cover;
+                  object-fit: contain;
                   background-color: #f8fafc;
-                  padding: 6px;
+                  padding: 10px;
                   overflow: hidden;
                 }
 
@@ -759,7 +759,7 @@ const BlogClient = ({ slug }) => {
                 }
                 
                 .blog-content-wrapper img:hover {
-                  transform: translateY(-4px) scale(1.02);
+                  transform: translateY(-6px) scale(1.02);
                   box-shadow: 
                     0 0 0 1px rgba(0, 0, 0, 0.05),
                     0 25px 50px -12px rgba(0, 0, 0, 0.15),
@@ -1159,16 +1159,16 @@ const BlogClient = ({ slug }) => {
                   >
                     <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-lg hover:border-gray-200 h-full flex flex-col">
                       {/* Fixed 16:9 aspect ratio image container */}
-                      <div className="relative overflow-hidden bg-gray-100" style={{ aspectRatio: '16/9' }}>
+                      <div className="relative overflow-hidden bg-gray-50" style={{ aspectRatio: '16/9' }}>
                         <img
                           src={blog.image}
                           alt={blog.title}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
                           loading="lazy"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent"></div>
                         
-                                              {/* Category badge */}
+                        {/* Category badge */}
                         <div className="absolute top-3 left-3">
                           <span className="bg-white/90 backdrop-blur-sm text-[#294944] text-xs font-semibold px-3 py-1 rounded-full border border-white/20 shadow-sm">
                             {blog.category}
