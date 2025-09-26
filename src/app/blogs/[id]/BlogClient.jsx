@@ -41,8 +41,8 @@ const BlogClient = ({ slug }) => {
       "image": {
         "@type": "ImageObject",
         "url": blog.image,
-        "width": 1921,
-        "height": 1085,
+        "width": 1931,
+        "height": 1095,
         "aspectRatio": "16:9"
       },
       "author": {
