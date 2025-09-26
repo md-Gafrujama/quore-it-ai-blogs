@@ -435,24 +435,23 @@ const BlogClient = ({ slug }) => {
             transition={{ duration: 0.8, delay: 0.6 }}
             className='relative'
           >
-            {/* Fixed Image Container - Show Full Image */}
-            <div className="relative w-full bg-white rounded-2xl p-3 shadow-2xl">
-              <div className="relative w-full overflow-hidden rounded-xl bg-gray-50" style={{ aspectRatio: '16/9' }}>
-                <Image 
-                  className='w-full h-full' 
-                  src={data.image} 
-                  width={1920} 
-                  height={1080} 
-                  alt={data.title}
-                  style={{ 
-                    objectFit: 'contain', 
-                    objectPosition: 'center',
-                    width: '100%',
-                    height: '100%'
-                  }}
-                  priority
-                />
-              </div>
+            {/* Updated Image with 16:9 aspect ratio */}
+            <div className="relative w-full bg-white rounded-2xl p-2 shadow-2xl">
+              <Image 
+                className='rounded-2xl w-full' 
+                src={data.image} 
+                width={1920} 
+                height={1080} 
+                alt={data.title}
+                style={{ 
+                  aspectRatio: '16/9', 
+                  objectFit: 'cover', 
+                  objectPosition: 'center',
+                  width: '100%',
+                  height: 'auto'
+                }}
+                priority
+              />
             </div>
           </motion.div>
           
@@ -733,37 +732,33 @@ const BlogClient = ({ slug }) => {
                 .blog-content-wrapper img {
                   margin: 2rem auto;
                   border-radius: 16px;
-                  width: 95%;
-                  max-width: 1000px;
+                  width: 85%;
+                  max-width: 900px;
                   height: auto;
                   display: block;
+                  object-fit: cover;
                   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                   box-shadow: 
                     0 0 0 1px rgba(0, 0, 0, 0.05),
                     0 10px 25px -5px rgba(0, 0, 0, 0.1),
                     0 20px 40px -7px rgba(0, 0, 0, 0.1);
                   position: relative;
-                  filter: brightness(0.95) saturate(1.05);
+                  filter: brightness(0.92) saturate(0.95);
                   aspect-ratio: 16/9;
-                  object-fit: contain;
-                  background-color: #f8fafc;
-                  padding: 10px;
-                  overflow: hidden;
                 }
 
                 @media (max-width: 768px) {
                   .blog-content-wrapper img {
                     width: 100%;
-                    max-width: 100%;
                   }
                 }
                 
                 .blog-content-wrapper img:hover {
-                  transform: translateY(-6px) scale(1.02);
+                  transform: translateY(-8px) scale(1.02);
                   box-shadow: 
                     0 0 0 1px rgba(0, 0, 0, 0.05),
-                    0 25px 50px -12px rgba(0, 0, 0, 0.15),
-                    0 40px 60px -15px rgba(0, 0, 0, 0.2);
+                    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                    0 40px 60px -15px rgba(0, 0, 0, 0.3);
                 }
                 
                 .blog-content-wrapper img::after {
@@ -1158,15 +1153,15 @@ const BlogClient = ({ slug }) => {
                     onClick={() => window.location.href = `/blogs/${blog.slug}`}
                   >
                     <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-lg hover:border-gray-200 h-full flex flex-col">
-                      {/* Fixed 16:9 aspect ratio image container */}
-                      <div className="relative overflow-hidden bg-gray-50" style={{ aspectRatio: '16/9' }}>
+                      {/* Updated 16:9 aspect ratio image container */}
+                      <div className="relative overflow-hidden bg-gray-100" style={{ aspectRatio: '16/9' }}>
                         <img
                           src={blog.image}
                           alt={blog.title}
-                          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                           loading="lazy"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
                         
                         {/* Category badge */}
                         <div className="absolute top-3 left-3">
