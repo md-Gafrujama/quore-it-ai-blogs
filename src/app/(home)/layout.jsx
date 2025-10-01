@@ -1,12 +1,12 @@
 import { baseURL } from '@/config/api';
 
 export const metadata = {
-  title: 'AI Blog - Latest Technology & Startup Insights',
-  description: 'Discover the latest insights on technology, startups, and lifestyle. Read expert articles and stay updated with trending topics.',
+  title: 'Quore IT Blog – Technology Insights, Trends & Analysis',
+  description: 'Stay updated with the latest in technology, recruitment, startups & industry trends. Quore IT shares expert perspectives and research-driven insights.',
   keywords: ['technology', 'startup', 'lifestyle', 'blog', 'articles', 'insights'],
   openGraph: {
-    title: 'AI Blog - Latest Technology & Startup Insights',
-    description: 'Discover the latest insights on technology, startups, and lifestyle. Read expert articles and stay updated with trending topics.',
+    title: 'Quore IT Blog – Technology Insights, Trends & Analysis',
+    description: 'Stay updated with the latest in technology, recruitment, startups & industry trends. Quore IT shares expert perspectives and research-driven insights.',
     type: 'website',
     url: baseURL,
     siteName: 'AI Blog',
@@ -21,7 +21,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Blog - Latest Technology & Startup Insights',
+    title: 'Quore IT Blog – Technology Insights, Trends & Analysis',
     description: 'Discover the latest insights on technology, startups, and lifestyle.',
     images: ['/logo.png'], // Add your logo path
   },
