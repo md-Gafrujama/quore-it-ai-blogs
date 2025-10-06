@@ -17,6 +17,7 @@ import { baseURL , company} from '@/config/api';
 const BlogClient = ({ slug }) => {
   const [isSubscribing, setIsSubscribing] = useState(false);
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState([]);
   const [name, setName] = useState('');
   const [content, setContent] = useState('');
@@ -93,6 +94,8 @@ const BlogClient = ({ slug }) => {
     } catch (error) {
       console.error('Error fetching blog data:', error);
       setData(null);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -355,6 +358,17 @@ const BlogClient = ({ slug }) => {
       <Footer />
     </>
   );
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#00CC91] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white text-xl">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (data ? (
     <>
