@@ -5,6 +5,7 @@ export async function generateMetadata({ params }) {
   const slug = params.id;
   console.log('Generating metadata for slug:', slug);
 
+  
   try {
     // Use the correct base URL for production
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://quore-it-ai-blogs.vercel.app';
