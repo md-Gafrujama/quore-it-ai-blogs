@@ -40,12 +40,13 @@ const BlogClient = ({ slug }) => {
       "headline": blog.title,
       "description": blog.description?.replace(/<[^>]+>/g, '').slice(0, 160),
       "image": {
-        "@type": "ImageObject",
-        "url": blog.image,
-        "width": 1920,
-        "height": 1080,
-        "aspectRatio": "16:9"
-      },
+  "@type": "ImageObject",
+  "url": blog.image,
+  "width": 1920,
+  "height": 1080,
+  "aspectRatio": "16:9"
+}
+,
       "author": {
         "@type": "Person",
         "name": blog.author || "Admin"
@@ -450,26 +451,18 @@ const BlogClient = ({ slug }) => {
             className='relative'
           >
             {/* Fixed Rectangular Image Container - No Aspect Ratio Constraint */}
-            <div className="relative w-full bg-white rounded-2xl p-4 shadow-2xl">
-              <div className="relative w-full overflow-hidden rounded-xl bg-gray-50">
-                <Image 
-                  className='w-full h-auto' 
-                  src={data.image} 
-                  width={1200} 
-                  height={600} 
-                  alt={data.title}
-                  style={{ 
-                    objectFit: 'contain', 
-                    objectPosition: 'center',
-                    width: '100%',
-                    height: 'auto',
-                    maxHeight: '70vh',
-                    minHeight: '400px'
-                  }}
-                  priority
-                />
-              </div>
-            </div>
+            <div className="relative w-full bg-white rounded-2xl p-3 shadow-2xl">
+  <div className="relative w-full overflow-hidden rounded-xl bg-gray-50 aspect-video">
+    <Image 
+      className="object-cover"
+      src={data.image}
+      alt={data.title}
+      fill
+      priority
+    />
+  </div>
+</div>
+
           </motion.div>
           
           {/* Premium Blog Content Format */}
